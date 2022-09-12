@@ -1,10 +1,4 @@
 
-// f. Implemente un módulo recursivo que reciba la lista generada en e. e imprima los valores de la lista
-// en el mismo orden que están almacenados.
-
-// g. Implemente un módulo recursivo que reciba la lista generada en e. e imprima los valores de la lista 
-// en orden inverso al que están almacenados.
-
 Program ejercicio1;
 
 Const 
@@ -52,8 +46,8 @@ Procedure imprecionRecursiva(V:vectS; dimL:integer);
 Begin
   If (dimL<>0)Then
     Begin
-      WriteLn(V[dimL]);
       imprecionRecursiva(V,(dimL-1));
+      WriteLn(V[dimL]);
     End;
 End;
 
@@ -64,8 +58,9 @@ Procedure ImprecionNormal(V:vectS;dimL:integer);
 Var 
   i: Integer;
 Begin
+  WriteLn('Impresion normal: ');
   For i:=1 To dimL Do
-    WriteLn('---',V[i],'---');
+    Writeln('---',V[i],'---');
 End;
 
 
@@ -104,6 +99,15 @@ Begin
     End;
 End;
 
+Procedure imprimirListaInversa (L:lista);
+Begin
+  If (L<>Nil) Then
+    Begin
+      imprimirListaInversa(L^.sig);
+      writeln(L^.data);
+    End
+End;
+
 Var 
   dimL: Integer;
   Vs: vectS;
@@ -117,5 +121,4 @@ Begin
   cargarListaCaracteres(L);
   imprimirLista(L);
   imprimirListaInversa(L);
-
 End.
