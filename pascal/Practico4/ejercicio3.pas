@@ -1,13 +1,3 @@
-// Implementar un programa que procese la información de las ventas de productos
-// de una librería que tiene 4 sucursales. De cada venta se lee fecha de venta, código
-// del producto vendido, código de sucursal y cantidad vendida. El ingreso de las ventas
-// finaliza cuando se lee el código de sucursal 0. Implementar un programa que:
-
-//     a. Almacene las ventas ordenadas por código de producto y agrupados por sucursal,
-//         en una estructura de datos adecuada.
-//     b. Contenga un módulo que reciba la estructura generada en el punto a y retorne
-//         una estructura donde esté acumulada la cantidad total vendida para cada código
-//         de producto.
 
 Program ejercicio3;
 
@@ -15,21 +5,34 @@ Const
   dimF = 4;
 
 Type 
-  rango = 1..dimF;
+  rango = 0..dimF;
+
   venta = Record
     cod: integer;
     suc: rango;
     cant: integer;
   End;
 
-  lista = ^nodo;
+  venta2 = Record
+    cod: Integer;
+    total: Integer;
+  End;
 
+  lista = ^nodo;
   nodo = Record
     data: venta;
     sig: lista;
   End;
 
+  listaNueva = ^nodoN;
+  nodoN = Record
+    data: venta2;
+    sig: listaNueva;
+  End;
+
   vectSuc = array[rango] Of lista;
+
+Procedure cargarVector(Var V: vectSuc);
 
 Procedure leerVenta (Var X:venta);
 Begin
@@ -43,5 +46,126 @@ Begin
       ReadLn(X.cant);
     End;
 End;
+
+Procedure   inicializVect(Var V: vectSuc);
+
+Var 
+  i: integer;
 Begin
+  For i:=1 To dimF Do
+    V[i] := Nil;
+End;
+
+Procedure insertarOrdenado (Var L:lista; X:venta);
+
+Var 
+  nue: lista;
+  act,ant: lista;
+Begin
+  new(nue);
+  nue^.data := X;
+  act := L;
+  ant := L;
+  While (act<>Nil) And (X.cod < act^.data.cod ) Do
+    Begin
+      ant := act;
+      act := act^.sig;
+    End;
+  If (act=ant) Then
+    L := nue
+  Else
+    ant^.sig := nue;
+  nue^.sig := act;
+End;
+
+Var 
+  X: venta;
+Begin
+  inicializVect(V);
+  leerVenta(X);
+  While (X.suc<>0) Do
+    Begin
+      insertarOrdenado(V[X.suc],X);
+      leerVenta(X);
+    End;
+End;
+
+
+Procedure mergeAcumulador(V: vectSuc; Var Lm: listaNueva);
+
+
+Procedure minimo(Var v:vectSuc; Var min:integer; Var cant:integer);
+
+Var indiceMin, i: rango;
+Begin
+  min := 999;
+  For i:=1 To dimF Do
+    If V[i] <> Nil Then
+      If V[i]^.data.cod < min Then
+        Begin
+          indiceMin := i;
+          min := V[i]^.data.cod;
+        End;
+
+  If min <> 999 Then
+    Begin
+      cant := V[indiceMin]^.data.cant;
+      V[indiceMin] := V[indiceMin]^.sig;
+    End;
+
+End;
+
+Procedure agregarAdelante (Var Lm:listaNueva; actual, cant:integer);
+
+Var 
+  nue: listaNueva;
+Begin
+  new(nue);
+  nue^.data.cod := actual;
+  nue^.data.total := cant;
+  nue^.sig := Lm;
+  Lm := nue;
+End;
+
+
+Var 
+  minCod, actual, cant, contador: integer;
+
+Begin
+  Lm := Nil;
+  minimo(V, minCod, contador);
+  While (minCod <> 999) Do
+    Begin
+      actual := minCod;
+      cant := 0;
+      While (minCod <> 999) And (actual = minCod) Do
+        Begin
+          cant := cant + contador;
+          minimo(V, minCod, contador);
+        End;
+      agregarAdelante(Lm, actual, cant);
+    End;
+End;
+
+
+Procedure imprimirListaNueva (Lm:listaNueva);
+Begin
+  If (Lm<>Nil) Then
+    Begin
+      writeln('---------------------');
+      writeln('Producto Codigo: ',Lm^.data.cod);
+      writeln('Total Ventas: ',Lm^.data.total);
+      writeln('---------------------');
+      imprimirListaNueva(Lm^.sig);
+    End;
+End;
+
+
+Var 
+  Lm: listaNueva;
+  V: vectSuc;
+Begin
+  cargarVector(V);
+  mergeAcumulador(V,Lm);
+  imprimirListaNueva(Lm);
 End.
