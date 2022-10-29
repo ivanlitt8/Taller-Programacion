@@ -1,0 +1,78 @@
+programa Ejercicio-5
+procesos
+  proceso posFinal ( E aveFin: numero ; E calleFin: numero ; E aveIn: numero )
+  comenzar
+    si (calleFin = 80)        {Robot 1}
+      Pos(aveFin,calleFin)
+    si (calleFin = 15)        {Robot 3}
+      Pos(aveFin,calleFin)
+    si (calleFin = 21)        {Robot 4}
+      Pos(aveIn,calleFin)
+    si (calleFin = 100)       {Robot 2}
+      Pos(aveIn,calleFin) 
+  fin
+areas
+  parte1ciudad : AreaC(1,1,100,100)
+robots
+  robot tipo1
+  variables
+    cont,aux,aveIn,aveFin,calleFin: numero
+  comenzar
+    derecha
+    aveIn:= PosAv
+    aux:= 0
+    repetir 6
+      cont:= 0
+      mientras(cont<20)
+        mientras(HayFlorEnLaEsquina)
+          tomarFlor
+        cont:= cont + 1
+        mover
+      aux := PosCa + 1
+      aveFin:= PosAv
+      calleFin:= PosCa
+      Pos(aveIn,aux)
+    posFinal(aveFin,calleFin,aveIn)
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+  fin  
+  robot tipo2
+  variables
+    cont,aux,calleIn,aveIn,calleFin,aveFin: numero
+  comenzar
+    aux:= 0
+    calleIn:= PosCa
+    aveIn:= PosAv
+    repetir 6
+      cont:= 0
+      mientras(cont<20)
+        mientras(HayPapelEnLaEsquina)
+          tomarPapel
+        cont:= cont + 1
+        mover
+      aux := PosAv + 1
+      calleFin:= PosCa
+      aveFin:= PosAv
+      Pos(aux,calleIn)
+    posFinal(aveFin,calleFin,aveIn)
+    mientras(HayPapelEnLaBolsa)
+      depositarPapel
+  fin
+variables
+  robot1: tipo2
+  robot2: tipo2
+  robot3: tipo1
+  robot4: tipo1
+comenzar
+  AsignarArea(robot1,parte1ciudad)
+  AsignarArea(robot2,parte1ciudad)
+  AsignarArea(robot3,parte1ciudad)
+  AsignarArea(robot4,parte1ciudad)
+  Iniciar(robot1, 10, 1)
+  Iniciar(robot2, 75, 80)
+  Iniciar(robot3, 80, 10)
+  Iniciar(robot4, 1, 75)
+fin
+
+
+

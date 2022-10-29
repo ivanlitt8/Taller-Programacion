@@ -1,0 +1,50 @@
+programa Ejercicio-1
+procesos
+  proceso recorrido(ES cant: numero)
+  comenzar
+    cant:= 0
+    repetir 9
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        cant:= cant + 1
+      mover
+  fin
+areas
+  parte1ciudad : AreaC(1,1,100,100)
+robots 
+  robot tipo1
+  variables
+    cant: numero
+    ganador: boolean
+  comenzar    
+    recorrido(cant)
+    EnviarMensaje(cant,robotP) 
+    RecibirMensaje(ganador,robotP)
+    si ganador = V 
+      Informar(cant) 
+  fin
+  robot tipoP
+  variables
+    cant1,cant2: numero
+  comenzar
+    RecibirMensaje(cant1,robot1)
+    RecibirMensaje(cant2,robot2)
+    si cant1>cant2
+      EnviarMensaje(V,robot1)
+      EnviarMensaje(F,robot2)
+    sino
+      EnviarMensaje(V,robot2)
+      EnviarMensaje(F,robot1)
+  fin
+variables
+  robot1: tipo1
+  robot2: tipo1
+  robotP: tipoP
+comenzar
+  AsignarArea(robot1,parte1ciudad)
+  AsignarArea(robot2,parte1ciudad)
+  AsignarArea(robotP,parte1ciudad)
+  Iniciar(robotP, 2, 1)
+  Iniciar(robot1, 1, 1)
+  Iniciar(robot2, 2, 11)
+fin

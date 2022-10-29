@@ -1,0 +1,55 @@
+programa Ejercicio-3
+procesos
+
+  proceso juntar(ES cantFlo : numero ; ES cantPap : numero)
+  comenzar
+    si(HayFlorEnLaEsquina)
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        cantFlo:= cantFlo + 1
+    si(HayPapelEnLaEsquina)
+      mientras(HayPapelEnLaEsquina)
+        tomarPapel
+        cantPap:= cantPap + 1
+  fin
+
+  proceso hacerEscalon(ES paso:numero; ES cantEsc : numero)
+  variables
+    cantFlo,cantPap: numero
+  comenzar
+    cantFlo:= 0
+    cantPap:= 0
+    repetir 2
+      repetir(paso)
+        juntar(cantFlo,cantPap)
+        mover
+      derecha
+    repetir 2
+      derecha
+    si(cantPap - 1 = cantFlo)
+      cantEsc:= cantEsc + 1
+  fin
+areas
+  parte1ciudad : AreaC(1,1,100,100)
+robots
+  robot tipo1
+  variables
+    paso,cantEsc: numero
+  comenzar
+    cantEsc:= 0
+    paso:= 1
+    repetir 4
+      hacerEscalon(paso,cantEsc)
+      paso:= paso + 1
+    Informar(cantEsc)
+  fin
+variables
+  robot1,robot2,robot3: tipo1
+comenzar
+  AsignarArea(robot1,parte1ciudad)
+  AsignarArea(robot2,parte1ciudad)
+  AsignarArea(robot3,parte1ciudad)
+  Iniciar(robot1, 12, 14)
+  Iniciar(robot2, 17, 10)
+  Iniciar(robot3, 22, 6)
+fin

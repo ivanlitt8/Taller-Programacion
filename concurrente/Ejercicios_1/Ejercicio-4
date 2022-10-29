@@ -1,0 +1,98 @@
+programa Ejercicio-4
+procesos
+  proceso orientar (E vueltas: numero)
+  comenzar
+    repetir vueltas
+      derecha
+  fin
+  proceso recVertical(ES aux : numero ; E limite : numero)
+  comenzar
+    si ( ( (PosAv>=51) & (PosAv<76) ) || (PosAv<25) ) {Area 1 y 3}
+      mientras(PosCa<100)&(aux<=limite)
+        mientras(PosCa<100)
+          mientras(HayFlorEnLaEsquina)
+            tomarFlor
+          mover
+        aux:= PosAv + 1
+        si(aux<=limite)
+          Pos(aux,1)
+    sino {Area 2 y 4}
+      mientras(PosCa<100)&(aux<=limite)
+        mientras(PosCa<100)
+          mientras(HayPapelEnLaEsquina)
+            tomarPapel
+          mover
+        aux:= PosAv + 1
+        si(aux<=limite)
+          Pos(aux,1)
+  fin
+  proceso recHorizontal(ES aux : numero ; E limite : numero)
+  variables
+    posAux: numero
+  comenzar
+    posAux:= limite - 24
+    si (( (PosAv>51) & (PosAv<76) ) || (PosAv<=25))
+      mientras(PosAv> posAux ) & (aux>0)
+        mientras(PosAv > posAux )
+          mientras(HayFlorEnLaEsquina)
+            tomarFlor
+          mover
+        aux:= PosCa - 1
+        si(aux>0)
+          Pos(limite,aux)
+    sino
+      mientras(PosAv> posAux ) & (aux>0)
+        mientras(PosAv > posAux )
+          mientras(HayPapelEnLaEsquina)
+            tomarPapel
+          mover
+        aux:= PosCa - 1
+        si(aux>0)
+          Pos(limite,aux)
+  fin
+  proceso recorridos(E aux: numero ; E limite:numero)
+  comenzar
+    aux:= 0
+    recVertical(aux,limite)
+    orientar(3)
+    recHorizontal(aux,limite)
+  fin
+areas
+  parte1ciudad : AreaC(1,1,25,100)
+  parte2ciudad : AreaPC(26,1,50,100)
+  parte3ciudad : AreaC(51,1,75,100)
+  parte4ciudad : AreaPC(76,1,100,100)
+robots
+  robot tipo1
+  variables
+    aux,limite: numero
+  comenzar
+    limite:= 25
+    recorridos(aux,limite)
+    orientar(1)
+    Pos(51,1)
+    limite:= limite + 50
+    recorridos(aux,limite)
+  fin
+  robot tipo2
+  variables
+    aux,limite: numero
+  comenzar
+    limite:= 50
+    recorridos(aux,limite)
+    orientar(1)
+    Pos(76,1)
+    limite:= limite + 50
+    recorridos(aux,limite)
+  fin
+variables
+  robot1: tipo1
+  robot2: tipo2
+comenzar
+  AsignarArea(robot1,parte1ciudad)
+  AsignarArea(robot1,parte3ciudad)
+  AsignarArea(robot2,parte2ciudad)
+  AsignarArea(robot2,parte4ciudad)
+  Iniciar(robot1, 1, 1)
+  Iniciar(robot2, 26, 1)
+fin
