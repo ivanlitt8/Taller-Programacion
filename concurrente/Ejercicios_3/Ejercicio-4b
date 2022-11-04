@@ -1,0 +1,127 @@
+programa Ejercicio-4b
+procesos
+  proceso elegirAleat
+  variables
+    id:numero
+  comenzar
+    Random(id,1,4)
+    si (id=1)
+      EnviarMensaje(V,rob1)
+    sino
+      si (id=2)
+        EnviarMensaje(V,rob2)
+      sino
+        si (id=3)
+          EnviarMensaje(V,rob3)
+        sino
+          si(id=4)
+            EnviarMensaje(V,rob4)
+  fin
+areas
+  areaInicial: AreaPC(10,10,10,10)
+  areaFinal: AreaPC(11,11,11,11)
+  areaCoord: AreaP(1,1,1,1)
+  areaR1: AreaP(9,9,9,9)
+  areaR2: AreaP(9,10,9,10)
+  areaR3: AreaP(9,11,9,11)
+  areaR4: AreaP(9,12,9,12)
+robots
+  robot robCo
+  variables
+    hay,final: boolean
+    ultimo,id,avIn,caIn: numero
+  comenzar
+    avIn:= PosAv
+    caIn:= PosCa
+    EnviarMensaje(1,rob1)
+    EnviarMensaje(2,rob2)
+    EnviarMensaje(3,rob3)
+    EnviarMensaje(4,rob4)
+    elegirAleat
+    RecibirMensaje(hay,*)
+    mientras(hay = V)
+      elegirAleat
+      RecibirMensaje(id,*)
+      si (id = 1)
+        RecibirMensaje(hay,rob1)
+      sino
+        si (id = 2)
+          RecibirMensaje(hay,rob2)
+        sino
+          si (id = 3)
+            RecibirMensaje(hay,rob3)
+          sino
+            si(id = 4)
+              RecibirMensaje(hay,rob4)
+      si(hay = F)
+        ultimo:= id
+    EnviarMensaje(F,rob1)
+    EnviarMensaje(F,rob2)
+    EnviarMensaje(F,rob3)
+    EnviarMensaje(F,rob4)
+    Informar(ultimo)
+    BloquearEsquina(11,11)
+    Pos(11,11)
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+    Pos(avIn,caIn)
+    LiberarEsquina(11,11)
+  fin
+  robot robR
+  variables
+    id,avIn,caIn:numero
+    entrar:boolean
+  comenzar
+    avIn:= PosAv
+    caIn:= PosCa
+    RecibirMensaje(id,robP)
+    RecibirMensaje(entrar,robP)
+    mientras entrar = V
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      si (HayFlorEnLaEsquina)
+        EnviarMensaje(V,robP)
+        tomarFlor
+        si ~(HayFlorEnLaEsquina)
+          EnviarMensaje(id,robP)
+          EnviarMensaje(F,robP)
+        BloquearEsquina(11,11)
+        Pos(avIn,caIn)
+        LiberarEsquina(10,10)
+        Pos(11,11)
+        depositarFlor
+        Pos(avIn,caIn)
+        LiberarEsquina(11,11)
+      RecibirMensaje(entrar,robP)
+    Pos(avIn,caIn)
+  fin
+variables
+  rob1,rob2,rob3,rob4: robR
+  robP: robCo
+comenzar
+  AsignarArea(rob1,areaInicial)
+  AsignarArea(rob2,areaInicial)
+  AsignarArea(rob3,areaInicial)
+  AsignarArea(rob4,areaInicial)
+  
+  AsignarArea(robP,areaCoord)
+  AsignarArea(rob1,areaR1)
+  AsignarArea(rob2,areaR2)
+  AsignarArea(rob3,areaR3)
+  AsignarArea(rob4,areaR4)
+  
+  AsignarArea(rob1,areaFinal)
+  AsignarArea(rob2,areaFinal)
+  AsignarArea(rob3,areaFinal)
+  AsignarArea(rob4,areaFinal)
+  AsignarArea(robP,areaFinal)
+  
+  Iniciar(robP,1,1)
+  Iniciar(rob1,9,9)
+  Iniciar(rob2,9,10)
+  Iniciar(rob3,9,11)
+  Iniciar(rob4,9,12)
+  
+fin
+
+

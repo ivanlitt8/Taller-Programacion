@@ -1,0 +1,137 @@
+programa Ejercicio-4
+procesos
+  proceso enviarResultado ( E id : numero)
+  comenzar
+    si id = 1
+      EnviarMensaje(V,robot1)
+    sino
+      si id = 2
+        EnviarMensaje(V,robot2)
+      sino
+        si id = 3
+          EnviarMensaje(V,robot3)
+        sino
+          si id = 4
+            EnviarMensaje(V,robot4)
+  fin
+  proceso recibirTotal(E id: numero ; ES total : numero)
+  variables
+    cant: numero
+  comenzar
+    total:= 0
+    si id = 1
+      RecibirMensaje(cant,robot1)
+      total:= cant
+    sino
+      si id = 2
+        RecibirMensaje(cant,robot2)
+        total:= cant
+      sino
+        si id = 3
+          RecibirMensaje(cant,robot3)
+          total:= cant
+        sino
+          si id = 4
+            RecibirMensaje(cant,robot4)
+            total:= cant
+  fin
+  proceso limpiarEsquina ( ES cant : numero )
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cant:= cant + 1
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cant:= cant +1
+  fin
+  proceso enviarMensajeAleat( E valor : numero )
+  comenzar
+    si valor = 1
+      EnviarMensaje(V,robot1)
+    sino
+      si valor = 2
+        EnviarMensaje(V,robot2)
+      sino
+        si valor = 3
+          EnviarMensaje(V,robot3)
+        sino
+          si valor = 4
+            EnviarMensaje(V,robot4)
+  fin
+areas
+  areaPadre: AreaP(1,1,1,1)
+  areaRec1: AreaP(25,1,25,1)
+  areaRec2: AreaP(30,1,30,1)
+  areaRec3: AreaP(35,1,35,1)
+  areaRec4: AreaP(40,1,40,1)
+  areaTrabajo: AreaPC(25,25,75,75)
+robots
+  robot tipo1
+  variables
+    aveIn,calleIn,av,ca,id,cant: numero
+    estado,ganador: boolean
+  comenzar
+    RecibirMensaje(id,robotP)
+    RecibirMensaje(estado,robotP)
+    mientras estado = V
+      aveIn:= PosAv
+      calleIn:= PosCa
+      Random(av,25,75)
+      Random(ca,25,75)
+      Pos(av,ca)
+      limpiarEsquina(cant)
+      Pos(aveIn,calleIn)
+      EnviarMensaje(V,robotP)
+      RecibirMensaje(estado,robotP)
+    si estado = F
+      EnviarMensaje(id,robotP)
+      EnviarMensaje(cant,robotP)
+    RecibirMensaje(ganador,robotP)
+    si ganador = V
+      Pos(50,50)
+  fin
+  robot tipoP
+  variables
+    valor,id,cant,max,ganador,total:numero
+    terminado: boolean
+  comenzar
+    max:= -1
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    EnviarMensaje(4,robot4)
+    repetir 10
+      Random(valor,1,4)
+      enviarMensajeAleat(valor)
+      RecibirMensaje(terminado,*)
+    EnviarMensaje(F,robot1)
+    EnviarMensaje(F,robot2)
+    EnviarMensaje(F,robot3)
+    EnviarMensaje(F,robot4)
+    repetir 4
+      RecibirMensaje(id,*)
+      recibirTotal(id,total)
+      si total > max
+        total:= max
+        ganador:= id
+    enviarResultado(ganador)
+  fin
+variables
+  robot1,robot2,robot3,robot4 : tipo1
+  robotP : tipoP
+comenzar
+  AsignarArea(robot1,areaRec1)
+  AsignarArea(robot2,areaRec2)
+  AsignarArea(robot3,areaRec3)
+  AsignarArea(robot4,areaRec4)
+  AsignarArea(robotP,areaPadre)
+  AsignarArea(robot1,areaTrabajo)
+  AsignarArea(robot2,areaTrabajo)
+  AsignarArea(robot3,areaTrabajo)
+  AsignarArea(robot4,areaTrabajo)
+  Iniciar(robotP, 1, 1)
+  Iniciar(robot1, 25, 1)
+  Iniciar(robot2, 30, 1)
+  Iniciar(robot3, 35, 1)
+  Iniciar(robot4, 40, 1)
+fin

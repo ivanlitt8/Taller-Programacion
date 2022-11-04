@@ -1,0 +1,97 @@
+programa Ejercicio-1
+procesos
+  proceso recolectarFlores(ES cantF:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantF := cantF +1
+  fin
+  proceso recolectarPapeles(ES cantP:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cantP := cantP +1
+  fin
+  proceso depositar(ES cant:numero)
+  comenzar
+    si(HayFlorEnLaBolsa)
+      repetir cant
+        depositarFlor
+    sino
+      si (HayPapelEnLaBolsa)  
+        repetir cant
+          depositarPapel
+  fin
+areas
+  areaFloreros:AreaPC(1,1,5,10)
+  areaPapeleros:AreaPC(6,1,10,9)
+  areainicio1f:AreaP(6,10,6,10)
+  areainicio2f:AreaP(7,10,7,10)
+  areainicio1p:AreaP(8,10,8,10)
+  areainicio2p:AreaP(9,10,9,10)
+  areadeposito:AreaC(10,10,10,10)
+robots
+  robot florero
+  variables
+    avin,cain,av,ca:numero
+    cantFlores:numero
+  comenzar
+    avin:=PosAv
+    cain:=PosCa
+    repetir 5
+      Random(av,1,5)
+      Random(ca,1,10)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      recolectarFlores(cantFlores)
+      Pos(avin,cain)
+      LiberarEsquina(av,ca)
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    depositar(cantFlores)
+    Pos(avin,cain)
+    LiberarEsquina(10,10)
+  fin
+  robot papelero
+  variables
+    avin,cain,av,ca:numero
+    cantPapeles:numero
+  comenzar
+    avin:=PosAv
+    cain:=PosCa
+    repetir 3
+      Random(av,6,10)
+      Random(ca,1,9)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      recolectarPapeles(cantPapeles)
+      Pos(avin,cain)
+      LiberarEsquina(av,ca)
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    depositar(cantPapeles)
+    Pos(avin,cain)
+    LiberarEsquina(10,10)
+  fin
+variables
+  flo1,flo2:florero
+  pap1,pap2:papelero
+comenzar
+  AsignarArea(flo1,areaFloreros)
+  AsignarArea(flo2,areaFloreros)
+  AsignarArea(pap1,areaPapeleros)
+  AsignarArea(pap2,areaPapeleros)
+  AsignarArea(flo1,areainicio1f)
+  AsignarArea(flo2,areainicio2f)
+  AsignarArea(pap1,areainicio1p)
+  AsignarArea(pap2,areainicio2p)
+  AsignarArea(flo1,areadeposito)
+  AsignarArea(flo2,areadeposito)
+  AsignarArea(pap1,areadeposito)
+  AsignarArea(pap2,areadeposito)
+
+  Iniciar(flo1,6,10)
+  Iniciar(flo2,7,10)
+  Iniciar(pap1,8,10)
+  Iniciar(pap2, 9,10)
+fin
