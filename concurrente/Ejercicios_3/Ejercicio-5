@@ -6,7 +6,7 @@ procesos
       calleMax:= calle
       idGan:= id
   fin
-  proceso elegirRobAleat(E id:numero )
+  proceso elegirRobAleat( E id:numero )
   comenzar
     si (id=1)
       EnviarMensaje(V,rob1)
@@ -19,6 +19,14 @@ procesos
         sino
           si(id=4)
             EnviarMensaje(V,rob4)
+  fin
+  proceso enviarPos (E id:numero)
+  variables
+    calleFin: numero
+  comenzar
+    EnviarMensaje(id,robP)
+    calleFin:= PosCa
+    EnviarMensaje(calleFin,robP)
   fin
 areas
   areaFuente: AreaPC(11,11,11,11)
@@ -76,10 +84,14 @@ robots
     caIn:= PosCa
     RecibirMensaje(id,robP)
     RecibirMensaje(carrera,robP)
-    mientras(carrera = V)
+    mientras (carrera = V)
       BloquearEsquina(11,11)
       avAnt:= PosAv
       caAnt:= PosCa
+      si caAnt = 20
+        LiberarEsquina(11,11)
+        EnviarMensaje(F,robP)
+        enviarPos(id)
       Pos(11,11)
       si(HayFlorEnLaEsquina)
         tomarFlor
@@ -88,15 +100,13 @@ robots
         EnviarMensaje(V,robP)
         mover
       sino
-        si~(HayFlorEnLaEsquina)
+        si ~(HayFlorEnLaEsquina)
           Pos(avAnt,caAnt)
           LiberarEsquina(11,11)
           EnviarMensaje(F,robP)
       RecibirMensaje(carrera,robP)
-    si carrera = F
-      EnviarMensaje(id,robP)
-      calleFin:= PosCa
-      EnviarMensaje(calleFin,robP)
+    si (carrera = F)
+      enviarPos(id)
   fin
 variables
   rob1,rob2,rob3,rob4: robR
@@ -121,5 +131,3 @@ comenzar
   Iniciar(rob3,8,1)
   Iniciar(rob4,10,1)
 fin
-
-
