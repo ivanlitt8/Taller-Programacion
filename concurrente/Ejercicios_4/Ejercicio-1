@@ -1,0 +1,107 @@
+programa Ejercicio-1
+procesos
+  proceso informarDeposito (E id: numero)
+  comenzar
+    si (id = 1)
+      EnviarMensaje(V,cli1)
+    sino
+      si (id = 2)
+        EnviarMensaje(V,cli2)
+      sino
+        si (id = 3)
+          EnviarMensaje(V,cli3)
+  fin
+areas
+  areaCli: AreaPC(1,1,3,100)
+  areaSer: AreaP(100,100,100,100)
+robots
+  robot cliente
+  variables
+    id,flores,avAct,sigCa,calleAct: numero
+    depositado: boolean
+  comenzar
+    RecibirMensaje(id,serv)
+    mientras PosCa < 100
+      calleAct:= PosCa
+      sigCa:= calleAct + 1
+      avAct:= PosAv
+      Random(flores,1,4)
+      EnviarMensaje(V,serv)
+      EnviarMensaje(id,serv)
+      EnviarMensaje(flores,serv)
+      EnviarMensaje(avAct,serv)
+      EnviarMensaje(sigCa,serv)
+      RecibirMensaje(depositado,serv)
+      mover
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+      mientras ((HayFlorEnLaBolsa)&(PosCa<100))
+        depositarFlor
+        si (HayFlorEnLaBolsa)
+          mover
+    si (PosCa = 100)
+      EnviarMensaje(F,serv)
+  fin
+  robot servidor
+  variables
+    ok: boolean
+    av,ca,flores,id: numero
+  comenzar
+    EnviarMensaje(1,cli1)
+    EnviarMensaje(2,cli2)
+    EnviarMensaje(3,cli3)
+    repetir 3
+      RecibirMensaje(ok,*)
+      mientras (ok = V)
+        RecibirMensaje(id,*)
+        si (id = 1)
+          RecibirMensaje(flores,cli1)
+          RecibirMensaje(av,cli1)
+          RecibirMensaje(ca,cli1)
+        sino
+          si (id = 2)
+            RecibirMensaje(flores,cli2)
+            RecibirMensaje(av,cli2)
+            RecibirMensaje(ca,cli2)
+          sino 
+            si (id = 3)
+              RecibirMensaje(flores,cli3)
+              RecibirMensaje(av,cli3)
+              RecibirMensaje(ca,cli3)
+        repetir flores
+          tomarFlor
+        Pos(av,ca)
+        repetir flores
+          depositarFlor
+        Pos(100,100)
+        informarDeposito(id)
+        RecibirMensaje(ok,*)
+  fin
+variables
+  cli1,cli2,cli3: cliente
+  serv: servidor
+comenzar
+  AsignarArea(cli1,areaCli)
+  AsignarArea(cli2,areaCli)
+  AsignarArea(cli3,areaCli)
+
+  AsignarArea(serv,areaSer)
+  AsignarArea(serv,areaCli)
+  
+  Iniciar(serv,100,100)
+  Iniciar(cli1,1,1)
+  Iniciar(cli2,2,1)
+  Iniciar(cli3,3,1)  
+fin
+
+
+
+
+
+
+
+
+
+
+
+
