@@ -1,0 +1,95 @@
+programa parcial-1
+areas
+  areaRec1: AreaP(1,1,1,1)
+  areaRec2: AreaP(2,2,2,2)
+  areaRecolec: AreaPC(5,5,5,5)
+  areaDepo: AreaPC(6,6,6,6)
+robots
+  robot recolector1
+  variables
+    avIn,caIn,cont,entrada: numero
+    estado: boolean
+  comenzar
+    avIn:= PosAv
+    caIn:= PosCa
+    entrada:= 0
+    EnviarMensaje(V,rec2)
+    RecibirMensaje(estado,rec2)
+    mientras (estado = V)
+      entrada:= entrada +1
+      cont:= 0
+      BloquearEsquina(5,5)
+      Pos(5,5)
+      mientras ((HayPapelEnLaEsquina) & (cont<10))
+        tomarPapel
+        cont:= cont + 1
+      si (cont > 0)
+        BloquearEsquina(6,6)
+        Pos(6,6)
+        LiberarEsquina(5,5)
+        EnviarMensaje(V,rec2)
+        mientras (HayPapelEnLaBolsa)
+          depositarPapel
+        Pos(avIn,caIn)
+        LiberarEsquina(6,6)
+        RecibirMensaje(estado,rec2)
+      sino
+        si (entrada = 1)
+          LiberarEsquina(5,5)
+        Pos(avIn,caIn)
+        estado:= F
+        EnviarMensaje(F,rec2)
+  fin
+  robot recolector2
+  variables
+    avIn,caIn,cont,entrada: numero
+    estado: boolean
+  comenzar
+    avIn:= PosAv
+    caIn:= PosCa
+    entrada:= 0
+    EnviarMensaje(V,rec1)
+    RecibirMensaje(estado,rec1)
+    mientras (estado = V)
+      entrada:= entrada + 1
+      cont:= 0
+      BloquearEsquina(5,5)
+      Pos(5,5)
+      mientras ((HayPapelEnLaEsquina) & (cont<10))
+        tomarPapel
+        cont:= cont + 1
+      si (cont > 0)
+        BloquearEsquina(6,6)
+        Pos(6,6)
+        LiberarEsquina(5,5)
+        EnviarMensaje(V,rec1)
+        mientras (HayPapelEnLaBolsa)
+          depositarPapel
+        Pos(avIn,caIn)
+        LiberarEsquina(6,6)
+        RecibirMensaje(estado,rec1)
+      sino
+        si (entrada = 1)
+          LiberarEsquina(5,5)
+        Pos(avIn,caIn)
+        estado:= F
+        EnviarMensaje(F,rec1)
+  fin
+variables
+  rec1: recolector1
+  rec2: recolector2
+comenzar
+  AsignarArea(rec1,areaRec1)
+  AsignarArea(rec2,areaRec2)
+  
+  AsignarArea(rec1,areaRecolec)
+  AsignarArea(rec2,areaRecolec)
+  
+  AsignarArea(rec1,areaDepo)
+  AsignarArea(rec2,areaDepo)
+  
+  Iniciar(rec1,1,1)
+  Iniciar(rec2,2,2)
+fin
+
+

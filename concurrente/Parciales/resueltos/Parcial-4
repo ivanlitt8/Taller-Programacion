@@ -1,0 +1,135 @@
+programa parcial-4
+procesos
+  proceso recta (E id: numero; ES cant:numero; E vuelta:numero)
+  variables
+    caAct,avAct,cont:numero
+  comenzar
+    cont:=0
+    si (id=1)
+      repetir 10
+        avAct:=PosAv
+        caAct:=PosCa
+        si (vuelta = 1)
+          caAct:= caAct + 1 
+        sino
+          si(vuelta=2)
+            avAct:= avAct + 1
+          sino
+            si(vuelta=3)
+              caAct:=caAct -1 
+            sino
+              si(vuelta =4 )
+                avAct:= avAct -1
+        BloquearEsquina(avAct,caAct)
+        mientras(HayPapelEnLaEsquina)
+          tomarPapel
+          cant:= cant + 1
+        mover
+        LiberarEsquina(avAct,caAct)
+    sino
+      si (id=2)
+        repetir 10
+          caAct:= PosCa
+          avAct:= PosAv
+          si (vuelta = 1)
+            caAct:= caAct + 1 
+          sino
+            si(vuelta=2)
+              avAct:= avAct + 1
+            sino
+              si(vuelta=3)
+                caAct:=caAct -1 
+              sino
+                si(vuelta =4 )
+                  avAct:= avAct - 1
+          BloquearEsquina(avAct,caAct)
+          mientras(HayFlorEnLaEsquina)
+            tomarFlor
+            cant:= cant + 1
+          mover
+          LiberarEsquina(avAct,caAct)
+  fin
+areas
+  areaCuadrado1: AreaPC(3,3,13,13)
+  areaCuadrado2: AreaPC(16,3,26,13)
+  areaFiscal: AreaP(14,6,14,6)
+robots
+  robot papeleros
+  variables
+    id,cant,vuelta: numero
+    final: boolean
+  comenzar
+    cant:=0
+    vuelta:=1
+    repetir 2
+      derecha
+    RecibirMensaje(id,robF)
+    repetir 4
+      recta(id,cant,vuelta)
+      vuelta:=vuelta + 1
+      derecha
+    EnviarMensaje(id,robF)
+    EnviarMensaje(cant,robF)
+  fin
+  robot floreros
+  variables
+    id,cant,vuelta: numero
+    final: boolean
+  comenzar
+    cant:= 0
+    vuelta:= 1
+    RecibirMensaje(id,robF)
+    repetir 4
+      recta(id,cant,vuelta)
+      vuelta:=vuelta + 1
+      derecha
+    EnviarMensaje(id,robF)
+    EnviarMensaje(cant,robF)
+  fin
+  robot fiscal
+  variables
+    id,cantidad,total: numero
+    pap,flo,ganador:numero
+  comenzar
+    EnviarMensaje(1,pap1)
+    EnviarMensaje(1,pap2)
+    EnviarMensaje(2,flo1)
+    EnviarMensaje(2,flo2)
+    total:= 0
+    pap:=0
+    flo:=0
+    repetir 4
+      RecibirMensaje(id,*)
+      si (id = 1)
+        pap:= pap + 1
+      sino
+        si (id = 2)
+          flo:=flo+1
+      si (pap = 2) & (flo < 2)
+        ganador:= 2
+      sino
+        si(flo=2) & (pap<2)
+          ganador:=1
+    repetir 4
+      RecibirMensaje(cantidad,*)
+      total:= total + cantidad
+    Informar(ganador)
+    Informar(total)
+  fin
+variables
+  pap1,pap2:papeleros
+  flo1,flo2:floreros
+  robF: fiscal
+comenzar
+  AsignarArea(pap1,areaCuadrado1)
+  AsignarArea(flo1,areaCuadrado1)
+  AsignarArea(pap2,areaCuadrado2)
+  AsignarArea(flo2,areaCuadrado2)
+  AsignarArea(robF,areaFiscal)
+  Iniciar(robF,14,6)
+  Iniciar(pap1,13,13)
+  Iniciar(pap2,26,13)
+  Iniciar(flo1,3,3)
+  Iniciar(flo2,16,3)
+fin
+
