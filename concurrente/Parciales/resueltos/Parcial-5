@@ -1,95 +1,88 @@
 programa parcial-1
 areas
-  areaRec1: AreaP(1,1,1,1)
-  areaRec2: AreaP(2,2,2,2)
-  areaRecolec: AreaPC(5,5,5,5)
-  areaDepo: AreaPC(6,6,6,6)
+  areaCarrera: AreaPC(1,1,21,40)
+  areaFiscal: AreaP(25,1,25,1)
 robots
-  robot recolector1
+  robot jugador
   variables
-    avIn,caIn,cont,entrada: numero
-    estado: boolean
+    avIn,caIn,id,av,pasos,cont,calleAct: numero
+    iniciar: boolean
   comenzar
     avIn:= PosAv
     caIn:= PosCa
-    entrada:= 0
-    EnviarMensaje(V,rec2)
-    RecibirMensaje(estado,rec2)
-    mientras (estado = V)
-      entrada:= entrada +1
+    RecibirMensaje(id,robF)
+    RecibirMensaje(av,robF)
+    Pos(av,caIn)
+    RecibirMensaje(iniciar,robF)
+    repetir 5
       cont:= 0
-      BloquearEsquina(5,5)
-      Pos(5,5)
-      mientras ((HayPapelEnLaEsquina) & (cont<10))
-        tomarPapel
+      Random(pasos,5,10)
+      mientras ((pasos<>cont) & (PosCa<40))
+        mientras (HayPapelEnLaEsquina)
+          tomarPapel
+        mover
         cont:= cont + 1
-      si (cont > 0)
-        BloquearEsquina(6,6)
-        Pos(6,6)
-        LiberarEsquina(5,5)
-        EnviarMensaje(V,rec2)
-        mientras (HayPapelEnLaBolsa)
-          depositarPapel
-        Pos(avIn,caIn)
-        LiberarEsquina(6,6)
-        RecibirMensaje(estado,rec2)
-      sino
-        si (entrada = 1)
-          LiberarEsquina(5,5)
-        Pos(avIn,caIn)
-        estado:= F
-        EnviarMensaje(F,rec2)
+    EnviarMensaje(id,robF)
+    calleAct:= PosCa
+    EnviarMensaje(calleAct,robF)
+    si(HayPapelEnLaBolsa)
+      BloquearEsquina(1,30)
+      Pos(1,30)
+      mientras(HayPapelEnLaBolsa)
+        depositarPapel
+      Pos(avIn,caIn)
+      LiberarEsquina(1,30)
+    sino
+      Pos(avIn,caIn)
   fin
-  robot recolector2
+  robot fiscal
   variables
-    avIn,caIn,cont,entrada: numero
-    estado: boolean
+    av,id,ca,ganador,caMax: numero
   comenzar
-    avIn:= PosAv
-    caIn:= PosCa
-    entrada:= 0
-    EnviarMensaje(V,rec1)
-    RecibirMensaje(estado,rec1)
-    mientras (estado = V)
-      entrada:= entrada + 1
-      cont:= 0
-      BloquearEsquina(5,5)
-      Pos(5,5)
-      mientras ((HayPapelEnLaEsquina) & (cont<10))
-        tomarPapel
-        cont:= cont + 1
-      si (cont > 0)
-        BloquearEsquina(6,6)
-        Pos(6,6)
-        LiberarEsquina(5,5)
-        EnviarMensaje(V,rec1)
-        mientras (HayPapelEnLaBolsa)
-          depositarPapel
-        Pos(avIn,caIn)
-        LiberarEsquina(6,6)
-        RecibirMensaje(estado,rec1)
+    EnviarMensaje(1,jug1)
+    EnviarMensaje(2,jug2)
+    EnviarMensaje(3,jug3)
+    
+    Random(av,1,7)
+    EnviarMensaje(av,jug1)
+    Random(av,8,14)
+    EnviarMensaje(av,jug2)
+    Random(av,15,21)
+    EnviarMensaje(av,jug3)
+    
+    EnviarMensaje(V,jug1)
+    EnviarMensaje(V,jug2)
+    EnviarMensaje(V,jug3)
+    
+    ganador:= 0
+    caMax:= 0
+    repetir 3
+      RecibirMensaje(id,*)
+      si(id = 1)
+        RecibirMensaje(ca,jug1)
       sino
-        si (entrada = 1)
-          LiberarEsquina(5,5)
-        Pos(avIn,caIn)
-        estado:= F
-        EnviarMensaje(F,rec1)
+        si(id = 2)
+          RecibirMensaje(ca,jug2)
+        sino
+          si(id = 3)
+            RecibirMensaje(ca,jug3)
+      si(ca > caMax)
+        ganador:= id
+        caMax:= ca
+    Informar(ganador)
   fin
 variables
-  rec1: recolector1
-  rec2: recolector2
+  jug1,jug2,jug3: jugador
+  robF: fiscal
 comenzar
-  AsignarArea(rec1,areaRec1)
-  AsignarArea(rec2,areaRec2)
+  AsignarArea(robF,areaFiscal)
   
-  AsignarArea(rec1,areaRecolec)
-  AsignarArea(rec2,areaRecolec)
+  AsignarArea(jug1,areaCarrera)
+  AsignarArea(jug2,areaCarrera)
+  AsignarArea(jug3,areaCarrera)
   
-  AsignarArea(rec1,areaDepo)
-  AsignarArea(rec2,areaDepo)
-  
-  Iniciar(rec1,1,1)
-  Iniciar(rec2,2,2)
+  Iniciar(robF,25,1)
+  Iniciar(jug1,1,1)
+  Iniciar(jug2,8,1)
+  Iniciar(jug3,15,1)
 fin
-
-
