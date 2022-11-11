@@ -1,0 +1,117 @@
+programa parcial-3
+procesos
+  proceso enviarEstado ( E valor : boolean)
+  comenzar
+    EnviarMensaje(valor,traba1)
+    EnviarMensaje(valor,traba2)
+    EnviarMensaje(valor,traba3)
+  fin
+  proceso recta (ES cont:numero)
+  comenzar
+    repetir 5 
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        cont:= cont+1
+      mover
+  fin
+areas
+  areaGlobal: AreaC(1,1,100,100)
+robots
+  robot florero
+  variables
+    id,avAct,caAct: numero
+  comenzar
+    RecibirMensaje(id,robF)
+    si (id = 1)
+      Pos(5,4)
+    sino
+      si (id = 2)
+        Pos(11,4)
+    mientras (PosCa < 16)
+      avAct:= PosAv
+      caAct:= PosCa
+      si(~HayFlorEnLaBolsa)
+        BloquearEsquina(15,15)
+        Pos(15,15)
+        si(HayFlorEnLaEsquina)
+          tomarFlor
+        Pos(avAct,caAct)
+        LiberarEsquina(15,15)
+      sino
+        Pos(avAct,caAct)
+      si(HayFlorEnLaBolsa)
+        depositarFlor
+      mover
+    si (id = 1)
+      EnviarMensaje(V,pap1)
+    sino
+      si (id = 2)
+        EnviarMensaje(V,pap2)
+  fin
+  robot papelero
+  variables
+    id,cont,avAct,caAct: numero
+    terminado: boolean
+  comenzar
+    derecha
+    RecibirMensaje(id,robF)
+    si id = 1
+      RecibirMensaje(terminado,flo1)
+      Pos(5,4)
+    sino
+      si id = 2
+        RecibirMensaje(terminado,flo2)
+        Pos(11,4)
+    cont:= 0
+    mientras (cont<4)
+      avAct:= PosAv
+      caAct:= PosCa
+      si(~HayPapelEnLaBolsa)
+        BloquearEsquina(15,15)
+        Pos(15,15)
+        si(HayPapelEnLaEsquina)
+          tomarPapel
+        Pos(avAct,caAct)
+        LiberarEsquina(15,15)
+      sino
+        Pos(avAct,caAct)
+      si(HayPapelEnLaBolsa)
+        depositarPapel
+      mover
+      cont:= cont + 1
+    EnviarMensaje(id,robF)
+    EnviarMensaje(V,robF)      
+  fin
+  robot fiscal
+  variables
+    id,ganador:numero
+  comenzar
+    EnviarMensaje(1,pap1)
+    EnviarMensaje(1,flo1)
+    EnviarMensaje(2,pap2)
+    EnviarMensaje(2,flo2)
+    RecibirMensaje(id,*)
+    si (id = 1)
+      ganador:= 1
+    sino
+      si (id = 2)
+        ganador:= 2
+    Informar(ganador)
+  fin
+variables
+  flo1,flo2: florero
+  pap1,pap2: papelero
+  robF: fiscal
+comenzar
+  AsignarArea(flo1,areaGlobal)
+  AsignarArea(pap1,areaGlobal)
+  AsignarArea(flo2,areaGlobal)
+  AsignarArea(pap2,areaGlobal)
+  AsignarArea(robF,areaGlobal)
+  
+  Iniciar(robF,1,1)
+  Iniciar(flo1,50,50)
+  Iniciar(pap1,51,51)
+  Iniciar(flo2,52,52)
+  Iniciar(pap2,53,53)
+fin
