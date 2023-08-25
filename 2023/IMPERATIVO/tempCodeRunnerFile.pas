@@ -1,0 +1,1 @@
+imprimirTickets(LT);
