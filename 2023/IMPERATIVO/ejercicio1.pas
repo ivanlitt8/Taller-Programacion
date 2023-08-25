@@ -11,7 +11,7 @@ Type
   alumno = Record
     nro: integer;
     ingreso: integer;
-    cant: integer;
+    cant: rango;
     materias: vectMaterias;
   End;
   lista = ^nodo;
@@ -33,30 +33,15 @@ Begin
     End;
 End;
 
-Procedure inicializarVector(Var V: vectMaterias);
-
-Var 
-  i: rango;
-Begin
-  For i:= 1 To dimF Do
-    Begin
-      V[i] := 0;
-    End;
-End;
-
 Procedure leerAlumno (Var A:alumno);
-
-Var 
-  V: vectMaterias;
 Begin
-  inicializarVector(V);
   writeln('Ingrese numero de alumno: ');
   readln(A.nro);
   writeln('Ingrese anio de ingreso: ');
   readln(A.ingreso);
   writeln('Ingrese cantidad de materias: ');
   readln(A.cant);
-  leerMaterias(V,A.cant);
+  leerMaterias(A.materias,A.cant);
 End;
 
 Procedure cargarAlumno(Var L:lista; A:alumno);
@@ -86,12 +71,9 @@ Procedure imprimirLista(L: lista);
 Begin
   While (L<>Nil) Do
     Begin
-      writeln('El promedio del alumno numero ',L^.data.nro,' es: ', calcularPromedio(L^.data.materias,L^.data.cant): 4:
-
-                                                                                                                       2
-
-                                                                                                                       )
-      ;
+      writeln('El promedio del alumno numero: ',L^.data.nro,' tiene un promedio de: ',calcularPromedio(L^.data.materias,
+              L^.data
+              .cant): 4: 2);
       L := L^.sig;
     End;
 End;
