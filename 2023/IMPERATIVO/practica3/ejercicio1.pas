@@ -47,8 +47,8 @@ Begin
   ReadLn(S.num);
   If (S.num<>0) Then
     Begin
-      // Write('Ingrese nombre de socio: ');
-      // ReadLn(S.nombre);
+      Write('Ingrese nombre de socio: ');
+      ReadLn(S.nombre);
       Write('Ingrese edad de socio: ');
       ReadLn(S.edad);
     End;
@@ -172,6 +172,60 @@ Begin
   WriteLn(buscar(A,valor));
 End;
 
+Procedure buscarSocioPorNombre(A:arbol);
+
+Function buscar(A:arbol; nombre:String): boolean;
+Begin
+  If (A=Nil) Then
+    buscar := false
+  Else
+    Begin
+      If (A^.data.nombre = nombre) Then
+        buscar := true
+      Else
+        Begin
+          buscar := buscar(A^.HI,nombre) Or buscar(A^.HD,nombre);
+        End;
+    End;
+End;
+
+Var 
+  nombre: string;
+Begin
+  Write('Ingrese nombre de socio a buscar ');
+  ReadLn(nombre);
+  WriteLn(buscar(A,nombre));
+End;
+
+Function contarSocios(A:arbol): integer;
+Begin
+  If (A<>Nil)Then
+    Begin
+      contarSocios := contarSocios(A^.HI) +  contarSocios(A^.HD) + 1;
+    End
+  Else
+    contarSocios := 0;
+End;
+
+Procedure cantidadSocios(A: arbol);
+Begin
+  WriteLn('La cantidad de socios del club es: ',contarSocios(A))
+End;
+
+Procedure promedioEdad(A:arbol);
+
+Function edadTotal(A:arbol): real;
+Begin
+  If (A<>Nil) Then
+    edadTotal := edadTotal(A^.HI) + edadTotal(A^.HD) + A^.data.edad
+  Else
+    edadTotal := 0;
+End;
+
+Begin
+  writeln('El promedio de edad es: ',(edadTotal(A)/contarSocios(A)): 4: 2);
+End;
+
 Var 
   A: arbol;
   numSocio,edadMax: integer;
@@ -183,14 +237,26 @@ Begin
   //   numeroDeSocioMenor(A);
   //   socioMayorEdad(A,edadMax,numSocio);
   //   writeln('El numero de socio ',numSocio,' es el que tiene la mayor edad con ',edadMax,' anios');
-  aumentarEdadSocios(A);
-  imprimirArbol(A);
-  buscarSocioPorNumero(A);
+  //   aumentarEdadSocios(A);
+  //   imprimirArbol(A);
+  //   buscarSocioPorNumero(A);
+  //   buscarSocioPorNombre(A);
+  //   cantidadSocios(A);
+  promedioEdad(A);
+  cantidadEntreValores(A);
 End.
 
-// v. Lea un valor entero e informe si existe o no existe un socio con ese valor. Debe invocar a
-// un módulo recursivo que reciba el valor leído y retorne verdadero o falso.
-// vi. Lea un nombre e informe si existe o no existe un socio con ese nombre. Debe invocar a
-// un módulo recursivo que reciba el nombre leído y retorne verdadero o falso.
-// vii. Informe la cantidad de socios. Debe invocar a un módulo recursivo que retorne dicha
-// cantidad.
+Procedure cantidadEntreValores(A:arbol);
+Begin
+  write('Ingresese el primer codigo ');
+  Readln(cod1);
+  writeln('Ingresese el primer codigo ');
+  Readln(cod1);
+  informarCantidad(A,cod1,cod2);
+End;
+
+// ix. Informe, a partir de dos valores que se leen, la cantidad de socios en el árbol cuyo
+// número de socio se encuentra entre los dos valores ingresados. Debe invocar a un módulo
+// recursivo que reciba los dos valores leídos y retorne dicha cantidad.
+// x. Informe los números de socio en orden creciente.
+// xi. Informe los números de socio pares en orden decreciente.
