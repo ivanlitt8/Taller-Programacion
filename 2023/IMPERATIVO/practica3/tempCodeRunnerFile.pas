@@ -1,7 +1,11 @@
-If (S.num<>0) Then
-  //     Begin
-  //       Write('Ingrese nombre de socio: ');
-  //       ReadLn(S.nombre);
-  //       Write('Ingrese edad de socio: ');
-  //       ReadLn(S.edad);
-  //     End;
+numeroDeSocioMayor(A);
+  numeroDeSocioMenor(A);
+  socioMayorEdad(A,edadMax,numSocio);
+  writeln('El numero de socio ',numSocio,' es el que tiene la mayor edad con ',edadMax,' anios');
+  aumentarEdadSocios(A);
+  imprimirArbol(A);
+  buscarSocioPorNumero(A);
+  buscarSocioPorNombre(A);
+  cantidadSocios(A);
+  promedioEdad(A);
+  sociosPares(A);

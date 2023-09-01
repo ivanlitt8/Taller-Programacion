@@ -57,13 +57,12 @@ Begin
     WriteLn(V[i]);
 End;
 
-Procedure imprecionRecursiva(V:vectorCadena ; dimL: integer; Var cont: integer);
+Procedure imprecionRecursiva(V:vectorCadena ; dimL: integer);
 Begin
-  If (cont<dimL) Then
+  If (dimL>0) Then
     Begin
-      cont := cont + 1;
-      WriteLn(V[cont]);
-      imprecionRecursiva(V,dimL,cont);
+      imprecionRecursiva(V,dimL-1);
+      WriteLn(V[dimL]);
     End;
 End;
 
@@ -126,7 +125,7 @@ Begin
 End;
 
 Var 
-  dimL,cont,cant: integer;
+  dimL,cant: integer;
   V: vectorCadena;
   V2: vectorCadena;
   L,ult: lista;
@@ -135,8 +134,7 @@ Begin
   dimL := 0;
   cargarCadena(V,dimL);
   imprecionIterativa(V,dimL);
-  cont := 0;
-  imprecionRecursiva(V,dimL,cont);
+  imprecionRecursiva(V,dimL);
   cant := 0;
   leerSecuenciaRecursiva(cant);
   WriteLn('Se leyeron ',cant,' caracteres');

@@ -45,13 +45,13 @@ Procedure leerSocio (Var S: socio);
 Begin
   Write('Ingrese numero de socio: ');
   ReadLn(S.num);
-  If (S.num<>0) Then
-    Begin
-      Write('Ingrese nombre de socio: ');
-      ReadLn(S.nombre);
-      Write('Ingrese edad de socio: ');
-      ReadLn(S.edad);
-    End;
+  // If (S.num<>0) Then
+  //   Begin
+  //     Write('Ingrese nombre de socio: ');
+  //     ReadLn(S.nombre);
+  //     Write('Ingrese edad de socio: ');
+  //     ReadLn(S.edad);
+  //   End;
 End;
 
 Procedure agregarAlArbol(Var A: arbol ; S: socio );
@@ -88,7 +88,7 @@ Begin
   If (A<>Nil)Then
     Begin
       imprimirArbol(A^.HI);
-      writeln(A^.data.edad);
+      writeln(A^.data.num);
       imprimirArbol(A^.HD);
     End;
 End;
@@ -134,7 +134,6 @@ Begin
       socioMayorEdad(A^.HD,edadMax,numSocio);
     End;
 End;
-
 
 Procedure aumentarEdadSocios(Var A: arbol);
 Begin
@@ -226,6 +225,53 @@ Begin
   writeln('El promedio de edad es: ',(edadTotal(A)/contarSocios(A)): 4: 2);
 End;
 
+Procedure sociosPares (A: arbol);
+Begin
+  If (A <> Nil) Then
+    Begin
+      sociosPares(A^.HD);
+      If (A^.data.num Mod 2 = 0) Then
+        Begin
+          writeln('Num de socio par: ', A^.data.num);
+        End;
+      sociosPares(A^.HI);
+    End;
+End;
+
+Procedure cantidadEntreValores (A:arbol);
+Function informarCantidad (A:arbol; cod1,cod2:integer): integer;
+Begin
+  If (A <> Nil ) Then
+    Begin
+      If ((A^.data.num >= cod1) And (A^.data.num <= cod2) )Then
+        Begin
+          informarCantidad := informarCantidad(A^.HD,cod1,cod2) + informarCantidad(A^.HI,cod1,cod2) + 1;
+        End
+      Else If (A^.data.num < cod1) Then
+             informarCantidad := informarCantidad (A^.HD,cod1,cod2)
+      Else If (A^.data.num > cod2) Then
+             informarCantidad := informarCantidad (A^.HI,cod1,cod2);
+    End
+  Else
+    informarCantidad := 0;
+End;
+
+Var 
+  aux,cod1,cod2: integer;
+Begin
+  write('Ingresese el primer codigo ');
+  Readln(cod1);
+  write('Ingresese el segundo codigo ');
+  Readln(cod2);
+  If (cod1>cod2)Then
+    Begin
+      aux := cod1;
+      cod1 := cod2;
+      cod2 := aux;
+    End;
+  WriteLn('La cantidad de socios entre los dos codigos es: ',informarCantidad(A,cod1,cod2));
+End;
+
 Var 
   A: arbol;
   numSocio,edadMax: integer;
@@ -233,30 +279,16 @@ Begin
   A := Nil;
   edadMax := 0;
   cargarArbol(A);
-  //   numeroDeSocioMayor(A);
-  //   numeroDeSocioMenor(A);
-  //   socioMayorEdad(A,edadMax,numSocio);
-  //   writeln('El numero de socio ',numSocio,' es el que tiene la mayor edad con ',edadMax,' anios');
-  //   aumentarEdadSocios(A);
-  //   imprimirArbol(A);
-  //   buscarSocioPorNumero(A);
-  //   buscarSocioPorNombre(A);
-  //   cantidadSocios(A);
+  numeroDeSocioMayor(A);
+  numeroDeSocioMenor(A);
+  socioMayorEdad(A,edadMax,numSocio);
+  writeln('El numero de socio ',numSocio,' es el que tiene la mayor edad con ',edadMax,' anios');
+  aumentarEdadSocios(A);
+  imprimirArbol(A);
+  buscarSocioPorNumero(A);
+  buscarSocioPorNombre(A);
+  cantidadSocios(A);
   promedioEdad(A);
+  sociosPares(A);
   cantidadEntreValores(A);
 End.
-
-Procedure cantidadEntreValores(A:arbol);
-Begin
-  write('Ingresese el primer codigo ');
-  Readln(cod1);
-  writeln('Ingresese el primer codigo ');
-  Readln(cod1);
-  informarCantidad(A,cod1,cod2);
-End;
-
-// ix. Informe, a partir de dos valores que se leen, la cantidad de socios en el árbol cuyo
-// número de socio se encuentra entre los dos valores ingresados. Debe invocar a un módulo
-// recursivo que reciba los dos valores leídos y retorne dicha cantidad.
-// x. Informe los números de socio en orden creciente.
-// xi. Informe los números de socio pares en orden decreciente.
