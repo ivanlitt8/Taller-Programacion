@@ -86,7 +86,7 @@ Begin
     End
   Else If (cod = A^.data.cod) Then
          A^.data.cant := A^.data.cant + cant
-  Else If (cod < A^.data.cod) Then
+  Else If (cod <= A^.data.cod) Then
          agregarProducto(A^.HI,cod,cant)
   Else
     agregarProducto(A^.HD,cod,cant)
@@ -141,7 +141,7 @@ Begin
     Begin
       If (A^.data.cod = cod) Then
         cantidadProd := A^.data.cant + cantidadProd(A^.HI, cod) + cantidadProd(A^.HD, cod)
-      Else If (A^.data.cod > cod) Then
+      Else If (A^.data.cod >= cod) Then
              cantidadProd := cantidadProd(A^.HI,cod)
       Else
         cantidadProd := cantidadProd(A^.HD,cod)
@@ -164,7 +164,7 @@ Begin
     cantidadProd := 0
   Else If (A^.data.cod = cod) Then
          cantidadProd := A^.data.cant
-  Else If (A^.data.cod > cod) Then
+  Else If (A^.data.cod >= cod) Then
          cantidadProd := cantidadProd(A^.HI,cod)
   Else
     cantidadProd := cantidadProd(A^.HD,cod)

@@ -111,7 +111,7 @@ Procedure numeroDeSocioMenor(A: arbol);
 
 Function numeroSocioMenor(A: arbol): integer;
 Begin
-  If (A^.HI <>Nil) Then
+  If (A^.HI <> Nil) Then
     numeroSocioMenor := numeroSocioMenor(A^.HI)
   Else
     numeroSocioMenor := A^.data.num;
@@ -243,14 +243,15 @@ Function informarCantidad (A:arbol; cod1,cod2:integer): integer;
 Begin
   If (A <> Nil ) Then
     Begin
-      If ((A^.data.num >= cod1) And (A^.data.num <= cod2) )Then
+      If (A^.data.num >= cod1) Then
         Begin
-          informarCantidad := informarCantidad(A^.HD,cod1,cod2) + informarCantidad(A^.HI,cod1,cod2) + 1;
+          If (A^.data.num <= cod2) Then
+            informarCantidad := informarCantidad(A^.HD,cod1,cod2) + informarCantidad(A^.HI,cod1,cod2) + 1
+          Else
+            informarCantidad := informarCantidad (A^.HI,cod1,cod2);
         End
-      Else If (A^.data.num < cod1) Then
-             informarCantidad := informarCantidad (A^.HD,cod1,cod2)
-      Else If (A^.data.num > cod2) Then
-             informarCantidad := informarCantidad (A^.HI,cod1,cod2);
+      Else
+        informarCantidad := informarCantidad (A^.HD,cod1,cod2)
     End
   Else
     informarCantidad := 0;

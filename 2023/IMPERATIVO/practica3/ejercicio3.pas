@@ -227,19 +227,80 @@ Begin
   Writeln('Hay ',cantImpares(A),' legajos impares');
 End;
 
+Function calcularPromedio(L: lista): real;
+
+Var 
+  total,notas: integer;
+Begin
+  total := 0;
+  notas := 0;
+  While (L<>Nil) Do
+    Begin
+      total := total + L^.data.nota;
+      notas := notas + 1;
+      L := L^.sig;
+    End;
+  calcularPromedio := (total/notas);
+End;
+
+
+Procedure promedioMaximo(A:arbol; Var maxProm: real; Var leg: integer);
+
+Var 
+  prom: real;
+Begin
+  If (A<>Nil) Then
+    Begin
+      prom := calcularPromedio(A^.data.finales);
+      If (prom>maxProm)Then
+        Begin
+          maxProm := prom;
+          leg := A^.data.leg;
+        End;
+      promedioMaximo(A^.HI,maxProm,leg);
+      promedioMaximo(A^.HD,maxProm,leg);
+    End;
+End;
+
+Procedure imprimirPromSuperiores(A:arbol; promBase:real);
+
+Var 
+  prom: real;
+Begin
+  If (A<>Nil) Then
+    Begin
+      prom := calcularPromedio(A^.data.finales);
+      If (prom>promBase) Then
+        writeln('Alumno con legajo: ',A^.data.leg,' tiene un promedio de: ',prom:4:2);
+      imprimirPromSuperiores(A^.HI,promBase);
+      imprimirPromSuperiores(A^.HD,promBase);
+    End;
+End;
+
+Procedure promediosBase(A: arbol);
+
+Var 
+  promBase: real;
+Begin
+  Write('Ingrese promedio base: ');
+  ReadLn(promBase);
+  imprimirPromSuperiores(A,promBase);
+End;
+
 Var 
   A: arbol;
+  maxProm: real;
+  leg: integer;
 Begin
+  maxProm := -1;
+  leg := -1;
   cargarArbol(A);
-  // imprimirArbol(A);
-  // imprimirSegunLegajo(A);
-  // legajoMayor(A);
+  imprimirArbol(A);
+  imprimirSegunLegajo(A);
+  legajoMayor(A);
   dniMaximo(A);
   cantLegajosImpar(A);
+  promedioMaximo(A,maxProm,leg);
+  writeln('El promedio maximo es: ',maxProm:4:2,' y pertence al alumno con legajo: ',leg);
+  promediosBase(A);
 End.
-
-
-// e. Un módulo que reciba la estructura generada en a. y retorne la cantidad de alumnos con
-// legajo impar.
-// e. Un módulo que reciba la estructura generada en a. y retorne el legajo y el promedio del
-// alumno con mayor promedio.
