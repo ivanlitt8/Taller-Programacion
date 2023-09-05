@@ -135,7 +135,32 @@ Procedure busquedaEnArbolVentas(A: arbolV);
 
 Function cantidadProd(A:arbolV; cod: integer): integer;
 Begin
-  If (A<>Nil) Then
+  If (A=Nil) Then
+    cantidadProd := 0
+  Else
+    Begin
+      If (A^.data.cod = cod) Then
+        cantidadProd := A^.data.cant + cantidadProd(A^.HI, cod) + cantidadProd(A^.HD, cod)
+      Else If (A^.data.cod > cod) Then
+             cantidadProd := cantidadProd(A^.HI,cod)
+      Else
+        cantidadProd := cantidadProd(A^.HD,cod)
+    End;
+End;
+
+Var 
+  cod: integer;
+Begin
+  write('Ingrese codigo de producto a buscar en Arbol de Ventas: ');
+  ReadLn(cod);
+  Writeln('El codigo ',cod,' tiene ',cantidadProd(A,cod),' productos vendidos.')
+End;
+
+Procedure busquedaEnArbolProductos(A: arbolP);
+
+Function cantidadProd(A:arbolP; cod: integer): integer;
+Begin
+  If (A=Nil) Then
     cantidadProd := 0
   Else If (A^.data.cod = cod) Then
          cantidadProd := A^.data.cant
@@ -148,9 +173,9 @@ End;
 Var 
   cod: integer;
 Begin
-  write('Ingrese codigo de producto: ');
+  write('Ingrese codigo de producto a buscar en Arbol de Productos: ');
   ReadLn(cod);
-  Write('El codigo ',cod,' tiene ',cantidadProd(A,cod),' productos vendidos.')
+  Writeln('El codigo ',cod,' tiene ',cantidadProd(A,cod),' productos vendidos.')
 End;
 
 Var 
@@ -158,8 +183,8 @@ Var
   AP: arbolP;
 Begin
   cargarArboles(AV,AP);
-  //   imprimirVentas(AV); // No requeridos, modulos de supervicion de varca
+  //   imprimirVentas(AV); // No requeridos, modulos de supervicion de carga
   //   imprimirProductos(AP);
   busquedaEnArbolVentas(AV);
-  //   busquedaEnArbolProductos(AP);
+  busquedaEnArbolProductos(AP);
 End.
