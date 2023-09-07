@@ -4,7 +4,7 @@
 // producto vendido, cantidad de unidades vendidas y precio unitario. El ingreso de las
 // ventas finaliza cuando se lee el código de venta -1.
 
-// b. Imprima el contenido del árbol ordenado por código de producto.}
+// b. Imprima el contenido del árbol ordenado por código de producto.
 
 // c. Contenga un módulo que reciba la estructura generada en el punto a y retorne el
 // código de producto con mayor cantidad de unidades vendidas.
@@ -15,7 +15,6 @@
 // e. Contenga un módulo que reciba la estructura generada en el punto a y dos códigos de
 // producto y retorne el monto total entre todos los códigos de productos comprendidos
 // entre los dos valores recibidos (sin incluir).
-
 
 Program ejercicio1;
 
@@ -42,30 +41,130 @@ Type
 
 Procedure leerVenta(Var V: venta);
 Begin
-  Write('Codigo de venta: ');
-  readln(v.codV);
-  If (v.codV <> -1 ) Then
+  Write('Codigo de Venta: ');
+  readln(V.codV);
+  If (V.codV <> -1 ) Then
     Begin
-      v.codP := random (99) +1;
-      v.cant := random (99) +1;
-      v.precio := random (99) +1;
+      Write('Codigo de Producto: ');
+      readln(V.codP);
+      Write('Cantidad de Unidades: ');
+      readln(V.cant);
+      Write('Precio Unitario: ');
+      readln(V.precio);
+      WriteLn('****************')
     End;
 End;
 
-Procedure agregarItem (Var a:arbol; v:venta);
+Procedure agregarProducto(Var A: arbol ; V: venta);
 Begin
-  If (a = Nil) Then
+  If (A = Nil) Then
     Begin
-      a^.data := v;
-      a^.HI := Nil;
-      a^.hd := Nil;
+      new(A);
+      A^.data.cod := V.codP;
+      A^.data.cant := V.cant;
+      A^.data.montoTot := (V.cant * V.precio);
+      A^.HI := Nil;
+      A^.HD := Nil;
     End
-  Else If (a^.data.codV > v.codV) Then
-         agregarItem()
-End;
+  Else If (V.codP = A^.data.cod) Then
+         Begin
+           A^.data.cant := A^.data.cant + V.cant;
+           A^.data.montoTot := A^.data.montoTot + (V.cant * V.precio);
+         End
+  Else If (V.codP < A^.data.cod) Then
+         agregarProducto(A^.HI,V)
+  Else
+    agregarProducto(A^.HD,V)
 End;
 
+Procedure cargarArbol (Var A:arbol);
 
+Var 
+  V: venta;
 Begin
+  leerVenta(V);
+  While (V.codV<>-1) Do
+    Begin
+      agregarProducto(A,V);
+      leerVenta(V);
+    End;
+End;
 
+Procedure imprimirProductos(A: arbol);
+Begin
+  If (A<>Nil) Then
+    Begin
+      imprimirProductos(A^.HI);
+      WriteLn('  +++++ PRODUCTO CARGADO +++++  ');
+      WriteLn('Producto codigo: ',A^.data.cod);
+      WriteLn('Cantidad de unidades: ',A^.data.cant);
+      WriteLn('Monto total: ',A^.data.montoTot:4:2);
+      imprimirProductos(A^.HD);
+    End;
+End;
+
+Procedure codigoMaxProductos(A: arbol);
+
+Procedure buscarMaximo(A: arbol; Var max: integer; Var codMax: integer);
+Begin
+  If (A<>Nil)Then
+    Begin
+      If (A^.data.cant>max)Then
+        Begin
+          max := A^.data.cant;
+          codMax := A^.data.cod;
+        End;
+      buscarMaximo(A^.HI,max,codMax);
+      buscarMaximo(A^.HD,max,codMax);
+    End;
+End;
+
+Var 
+  max,codMax: integer;
+Begin
+  max := -1;
+  codMax := -1;
+  buscarMaximo(A,max,codMax);
+  WriteLn('El codigo de producto con mayor cantidad de unidades vendidas es: ',codMax);
+End;
+
+Procedure cantCodigosMenores(A: arbol);
+
+Function contarMenoresACod(A: arbol; cod: integer): integer;
+Begin
+  If (A <> Nil) Then
+    Begin
+      If (A^.data.cod >= cod) Then
+        Begin
+          contarMenoresACod := contarMenoresACod(A^.HI,cod);
+        End
+      Else If (A^.data.cod < cod) Then
+             contarMenoresACod := contarMenoresACod(A^.HI,cod) + contarMenoresACod(A^.HD,cod) + 1;
+    End
+  Else
+    contarMenoresACod := 0;
+End;
+
+Var 
+  cant,cod: integer;
+Begin
+  cant := 0;
+  Write('Ingrese codigo de producto: ');
+  ReadLn(cod);
+  WriteLn('La cantidad de codigos menores que el ingresado es: ',contarMenoresACod(A,cod));
+End;
+
+Var 
+  A: arbol;
+Begin
+  cargarArbol(A);
+  imprimirProductos(A);
+  codigoMaxProductos(A);
+  cantCodigosMenores(A);
 End.
+
+
+
+// e. Contenga un módulo que reciba la estructura generada en el punto a y dos códigos de
+// producto y retorne el monto total entre todos los códigos de productos comprendidos
+// entre los dos valores recibidos (sin incluir).

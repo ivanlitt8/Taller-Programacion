@@ -153,13 +153,15 @@ Procedure impresionLegInferiores(A: arbol; leg: Integer);
 Begin
   If (A<>Nil) Then
     Begin
-      impresionLegInferiores(A^.HI,leg);
       If (A^.data.leg<leg) Then
         Begin
           writeln('DNI: ',A^.data.dni);
           writeln('Anio de ingreso: ',A^.data.ing);
+          impresionLegInferiores(A^.HI,leg);
           impresionLegInferiores(A^.HD, leg);
-        End;
+        End
+      Else If (A^.data.leg >= leg) Then
+             impresionLegInferiores(A^.HI,leg);
     End;
 End;
 
@@ -193,10 +195,10 @@ Procedure dniMax (A:arbol ; Var max: integer);
 Begin
   If (A<>Nil) Then
     Begin
+      dniMax(A^.HD,max);
+      dniMax(A^.HI,max);
       If (A^.data.dni>max) Then
         max := A^.data.dni;
-      dniMax(A^.HI,max);
-      dniMax(A^.HD,max);
     End;
 End;
 
@@ -292,15 +294,15 @@ Var
   maxProm: real;
   leg: integer;
 Begin
-  maxProm := -1;
-  leg := -1;
+  // maxProm := -1;
+  // leg := -1;
   cargarArbol(A);
-  imprimirArbol(A);
-  imprimirSegunLegajo(A);
-  legajoMayor(A);
+  // imprimirArbol(A);
+  // imprimirSegunLegajo(A);
+  // legajoMayor(A);
   dniMaximo(A);
-  cantLegajosImpar(A);
-  promedioMaximo(A,maxProm,leg);
-  writeln('El promedio maximo es: ',maxProm:4:2,' y pertence al alumno con legajo: ',leg);
-  promediosBase(A);
+  // cantLegajosImpar(A);
+  // promedioMaximo(A,maxProm,leg);
+  // writeln('El promedio maximo es: ',maxProm:4:2,' y pertence al alumno con legajo: ',leg);
+  // promediosBase(A);
 End.
