@@ -51,7 +51,7 @@ Begin
       readln(V.cant);
       Write('Precio Unitario: ');
       readln(V.precio);
-      WriteLn('****************')
+      WriteLn('  +++++ PRODUCTO CARGADO +++++  ');
     End;
 End;
 
@@ -74,7 +74,7 @@ Begin
   Else If (V.codP < A^.data.cod) Then
          agregarProducto(A^.HI,V)
   Else
-    agregarProducto(A^.HD,V)
+    agregarProducto(A^.HD,V);
 End;
 
 Procedure cargarArbol (Var A:arbol);
@@ -95,10 +95,10 @@ Begin
   If (A<>Nil) Then
     Begin
       imprimirProductos(A^.HI);
-      WriteLn('  +++++ PRODUCTO CARGADO +++++  ');
       WriteLn('Producto codigo: ',A^.data.cod);
       WriteLn('Cantidad de unidades: ',A^.data.cant);
       WriteLn('Monto total: ',A^.data.montoTot:4:2);
+      WriteLn('****************');
       imprimirProductos(A^.HD);
     End;
 End;
@@ -129,17 +129,14 @@ Begin
 End;
 
 Procedure cantCodigosMenores(A: arbol);
-
 Function contarMenoresACod(A: arbol; cod: integer): integer;
 Begin
   If (A <> Nil) Then
     Begin
-      If (A^.data.cod >= cod) Then
-        Begin
-          contarMenoresACod := contarMenoresACod(A^.HI,cod);
-        End
-      Else If (A^.data.cod < cod) Then
-             contarMenoresACod := contarMenoresACod(A^.HI,cod) + contarMenoresACod(A^.HD,cod) + 1;
+      If (A^.data.cod < cod) Then
+        contarMenoresACod := contarMenoresACod(A^.HI,cod) + contarMenoresACod(A^.HD,cod) + 1
+      Else If (A^.data.cod >= cod) Then
+             contarMenoresACod := contarMenoresACod(A^.HI,cod);
     End
   Else
     contarMenoresACod := 0;
@@ -154,17 +151,48 @@ Begin
   WriteLn('La cantidad de codigos menores que el ingresado es: ',contarMenoresACod(A,cod));
 End;
 
+Function calcularMonto (A:arbol; cod1,cod2:integer): Real;
+Begin
+  If (A <> Nil ) Then
+    Begin
+      If (A^.data.cod > cod1) Then
+        Begin
+          If (A^.data.cod < cod2) Then
+            calcularMonto := calcularMonto(A^.HD,cod1,cod2) + calcularMonto(A^.HI,cod1,cod2) + A^.data.montoTot
+          Else
+            calcularMonto := calcularMonto (A^.HI,cod1,cod2);
+        End
+      Else
+        calcularMonto := calcularMonto (A^.HD,cod1,cod2)
+    End
+  Else
+    calcularMonto := 0;
+End;
+
+Procedure montoTotal(A: arbol);
+
+Var 
+  aux,cod1,cod2: integer;
+Begin
+  Write('Ingrese codigo 1: ');
+  ReadLn(cod1);
+  Write('Ingrese codigo 2: ');
+  ReadLn(cod2);
+  If (cod1>cod2) Then
+    Begin
+      aux := cod1;
+      cod1 := cod2;
+      cod2 := aux;
+    End;
+  Write('El monto total entre estos dos codigos es: ',calcularMonto(A,cod1,cod2): 4: 2);
+End;
+
 Var 
   A: arbol;
 Begin
   cargarArbol(A);
   imprimirProductos(A);
-  codigoMaxProductos(A);
+  // codigoMaxProductos(A);
   cantCodigosMenores(A);
+  // montoTotal(A);
 End.
-
-
-
-// e. Contenga un módulo que reciba la estructura generada en el punto a y dos códigos de
-// producto y retorne el monto total entre todos los códigos de productos comprendidos
-// entre los dos valores recibidos (sin incluir).
