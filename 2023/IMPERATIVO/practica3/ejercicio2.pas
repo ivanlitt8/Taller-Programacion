@@ -56,6 +56,7 @@ Begin
       ReadLn(V.fecha);
       write('Ingrese cantidad de venta: ');
       ReadLn(V.cant);
+      WriteLn('  ++ VENTA CARGADA ++  ');
     End;
 End;
 
@@ -140,8 +141,8 @@ Begin
   Else
     Begin
       If (A^.data.cod = cod) Then
-        cantidadProd := A^.data.cant + cantidadProd(A^.HI, cod) + cantidadProd(A^.HD, cod)
-      Else If (A^.data.cod >= cod) Then
+        cantidadProd := A^.data.cant + cantidadProd(A^.HI, cod)
+      Else If (A^.data.cod > cod) Then
              cantidadProd := cantidadProd(A^.HI,cod)
       Else
         cantidadProd := cantidadProd(A^.HD,cod)
@@ -186,5 +187,5 @@ Begin
   //   imprimirVentas(AV); // No requeridos, modulos de supervicion de carga
   //   imprimirProductos(AP);
   busquedaEnArbolVentas(AV);
-  busquedaEnArbolProductos(AP);
+  // busquedaEnArbolProductos(AP);
 End.
