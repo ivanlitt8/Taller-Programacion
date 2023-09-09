@@ -303,50 +303,48 @@ Begin
   WriteLn('El modelo del auto con esa patente es: ',buscarModelo(A,pat));
 End;
 
-// Function buscarEnLista(L:lista; pat,modelo: String): boolean;
+Function recorrerLista (L:lista;num:integer): string;
+Begin
+  If ( L <> Nil ) Then
+    Begin
+      If (L^.data.pat = num) Then
+        recorrerLista := L^.data.modelo
+      Else
+        recorrerLista := recorrerLista (L^.sig,num);
+    End;
+End;
 
-// Var 
-//   encontre: Boolean;
-// Begin
-//   encontre := false;
-//   While (L<>Nil) Do
-//     Begin
-//       If (L^.data.pat = pat) Then
-//         encontre := true;
-//       L := L^.sig;
-//     End;
-//   buscarEnLista := encontre;
-// End;
+Function encontrar (L:lista;num:integer): boolean;
+Begin
+  If ( L <> Nil ) Then
+    Begin
+      If (L^.data.patente = num) Then
+        encontrar := true
+      Else
+        encontrar := encontrar (L^.sig,num);
+    End
+  Else
+    encontrar := false;
+End;
 
-// Procedure buscarModelo2 (A:arbolM; pat:String; Var modelo: String);
+Procedure buscarPatente2 (A:arbolM; Var modelo:sting; num:integer);
 
-// Var 
-//   aux: boolean;
-// Begin
-//   If (A<>Nil) Then
-//     Begin
-//       aux := encontrar(a,num);
-//       If (aux = true) Then
-//         buscarEnLista (a,num,modelo)
-//       Else
-//         Begin
-//           buscarModelo2(a^.hi,pat,modelo);
-//           buscarModelo2(a^.hd,pat, modelo);
-//         End;
-//     End;
-// End;
+Var 
+  aux: boolean;
+Begin
+  If (A <> Nil) Then
+    Begin
+      aux := encontrar(A^.data,num);
+      If (aux = true) Then
+        modelo := recorrerLista(A^.data,num)
+      Else
+        Begin
+          devolverModelo (A^.HI,modelo,num);
+          devolverModelo(A^.HD,modelo,num);
+        End;
+    End;
+End;
 
-// Procedure buscarPatente2(A:arbolM);
-
-// Var 
-//   pat,modelo: str10;
-// Begin
-//   modelo := 'NO EXISTE MODELO CON ESA PATENTE';
-//   WriteLn('Ingrese patente de modelo a buscar: ');
-//   ReadLn(pat);
-//   buscarModelo2(A,pat,modelo);
-//   WriteLn('El modelo del auto con esa patente es: ',modelo);
-// End;
 
 Var 
   V: vectorAnios;
@@ -368,45 +366,3 @@ Begin
   //   buscarPatente(AP);
   //   buscarPatente2(AM);    ESTE MODULO FALTA PUNTO F
 End.
-
-// Function recorrerLista (l:lista;num:integer): string;
-// Begin
-//   If ( l <> Nil ) Then
-//     Begin
-//       If (l^.data.patente = num) Then
-//         recorrerLista := l^.data.modelo
-//       Else
-//         recorrerLista := recorrerLista (l^.sig,num);
-//     End;
-// End;
-
-// Function encontrar (l:lista;num:integer): boolean;
-// Begin
-//   If ( l <> Nil ) Then
-//     Begin
-//       If (l^.data.patente = num) Then
-//         encontrar := true
-//       Else
-//         encontrar := encontrar (l^.sig,num);
-//     End
-//   Else
-//     encontrar := false;
-// End;
-
-// Procedure devolverModelo (am:arbolM; Var modelo:str; num:integer);
-
-// Var 
-//   aux: boolean;
-// Begin
-//   If (am <> Nil) Then
-//     Begin
-//       aux := encontrar(am^.data,num);
-//       If (aux = true) Then
-//         modelo := recorrerLista(am^.data,num)````
-//       Else
-//         Begin
-//           devolverModelo (am^.hi,modelo,num);
-//           devolverModelo(am^.hd,modelo,num);
-//         End;
-//     End;
-// End;
