@@ -14,12 +14,11 @@ Program ejercicio4;
 
 Type 
 
-
   reclamo = Record
     cod: Integer;
     dni: Integer;
     anio: Integer;
-    tipo: String;
+    // tipo: String;
   End;
 
   lista = ^nodo1;
@@ -31,13 +30,24 @@ Type
   registo = Record
     historial: lista;
     cant: integer;
+    dni: integer;
   End;
 
   arbol = ^nodo2;
   nodo2 = Record
-    data : registo;
+    data: registo;
     HI: arbol;
     HD: arbol;
+  End;
+
+  codigos = Record
+    cod: integer;
+  End;
+
+  listaCod = ^nodo3;
+  nodo3 = Record
+    data: codigos;
+    sig: listaCod;
   End;
 
 Procedure leerReclamo(Var R:reclamo);
@@ -50,8 +60,8 @@ Begin
       ReadLn(R.dni);
       write('Ingrese anio de reclamo: ');
       ReadLn(R.anio);
-      write('Ingrese tipo: ');
-      ReadLn(R.tipo);
+      // write('Ingrese tipo: ');
+      // ReadLn(R.tipo);
       writeln('  ++ RECLAMO LEIDO ++  ');
     End;
 End;
@@ -74,6 +84,7 @@ Begin
       new(A);
       A^.data.historial := Nil;
       A^.data.cant := 1;
+      A^.data.dni := R.dni;
       A^.HI := Nil;
       A^.HD := Nil;
       agregarALista(A^.data.historial,R);
@@ -112,7 +123,7 @@ Begin
       writeln('Codigo de reclamo: ',L^.data.cod);
       writeln('DNI persona: ',L^.data.dni);
       writeln('Anio reclamo: ',L^.data.anio);
-      writeln('Tipo: ',L^.data.tipo);
+      // writeln('Tipo: ',L^.data.tipo);
       writeln('----------------');
       L := L^.sig;
     End;
@@ -131,17 +142,128 @@ Begin
     End;
 End;
 
+Function contarReclamos(A: arbol; dni: Integer): Integer;
+Begin
+  If (A <> Nil) Then
+    Begin
+      If (A^.data.dni = dni)Then
+        contarReclamos := A^.data.cant
+      Else If (A^.data.dni < dni) Then
+             contarReclamos := contarReclamos(A^.HD,dni)
+      Else
+        contarReclamos := contarReclamos(A^.HI,dni);
+    End
+  Else
+    contarReclamos := 0;
+End;
+
+Procedure cantidadReclamosDNI(A:arbol);
+
+Var 
+  dni: integer;
+Begin
+  Write('Ingrese DNI: ');
+  ReadLn(dni);
+  writeln('La cantidad de reclamos de este dni es: ',contarReclamos(A,dni));
+End;
+
+Function contarCant(A: arbol; dni1,dni2: integer): integer;
+Begin
+  If (A<>Nil) Then
+    Begin
+      If (A^.data.dni >= dni1)Then
+        Begin
+          If (A^.data.dni <= dni2)Then
+            contarCant := contarCant(A^.HI,dni1,dni2) + contarCant(A^.HD,dni1,dni2) + A^.data.cant
+          Else
+            contarCant := contarCant(A^.HI,dni1,dni2);
+        End
+      Else
+        contarCant := contarCant(A^.HD,dni1,dni2);
+    End
+  Else
+    contarCant := 0;
+End;
+
+Procedure cantidadReclamosEntreDNI(A: arbol);
+
+Var 
+  dni1,dni2,aux: integer;
+Begin
+  write('Ingrese DNI 1: ');
+  readln(dni1);
+  write('Ingrese DNI 2: ');
+  readln(dni2);
+  If (dni1>dni2)Then
+    Begin
+      aux := dni1;
+      dni1 := dni2;
+      dni2 := aux;
+    End;
+  writeln('La cantidad de reclamos entre estos dni es: ', contarCant(A,dni1,dni2));
+End;
+
+Procedure imprimirLista(L: listaCod);
+Begin
+  While (L<>Nil) Do
+    Begin
+      writeln('Codigo: ',L^.data.cod);
+      writeln('  /////////////  ');
+      L := L^.sig;
+    End;
+End;
+
+Procedure agregarAListaCodigos(Var L: listaCod; C: integer);
+
+Var 
+  nue: listaCod;
+Begin
+  new(nue);
+  nue^.data.cod := C;
+  nue^.sig := L;
+  L := nue;
+End;
+
+Procedure verificacionAnio(L: lista ; Var LC: listaCod ; anio: integer);
+Begin
+  While (L<>Nil) Do
+    Begin
+      If (L^.data.anio = anio) Then
+        agregarAListaCodigos(LC,L^.data.cod);
+      L := L^.sig;
+    End;
+End;
+
+Procedure cargarLista(A: arbol; Var L: listaCod ; anio:integer);
+Begin
+  If (A <> Nil) Then
+    Begin
+      cargarLista(A^.HI,L,anio);
+      verificacionAnio(A^.data.historial,L,anio);
+      cargarLista(A^.HD,L,anio);
+    End;
+End;
+
+Procedure codigosPorAnio(A: arbol);
+
+Var 
+  L: listaCod;
+  anio: integer;
+Begin
+  L := Nil;
+  write('Ingrese anio: ');
+  readln(anio);
+  cargarLista(A,L,anio);
+  imprimirLista(L);
+End;
+
 Var 
   A: arbol;
 Begin
   A := Nil;
   cargarArbol(A);
   imprimirArbol(A);
+  // cantidadReclamosDNI(A);
+  // cantidadReclamosEntreDNI(A);
+  codigosPorAnio(A);
 End.
-
-
-
-
-
-// a) Un módulo que retorne estructura adecuada para la búsqueda por DNI. Para cada DNI
-// se deben tener almacenados cada reclamo y la cantidad total de reclamos que realizó.
