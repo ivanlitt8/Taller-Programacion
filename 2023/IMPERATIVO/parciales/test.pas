@@ -14,10 +14,11 @@
 // se encontró la oficina.
 // d) Un módulo recursivo que retorne el monto total de las expensas.
 
-Program ejercicio1;
+
+Program test;
 
 Const 
-  dimF = 5;
+  dimF = 30;
 
 Type 
 
@@ -48,7 +49,7 @@ Var
 Begin
   Randomize;
   leerOficina(O);
-  While (O.cod<>-1) And (dimL < dimF) Do
+  While (dimL < dimF) And (O.cod<>-1) Do
     Begin
       dimL := dimL + 1;
       V[dimL] := O;
@@ -70,25 +71,14 @@ Begin
     End;
 End;
 
-Procedure ordenPorSeleccion(Var V: vector; dimL: Integer);
-
 Var 
-  i,j,k: rango;
-  O: oficina;
+  V: vector;
+  dimL: integer;
 Begin
-  For i:= 1 To dimL-1 Do
-    Begin
-      k := i;
-      For j:= i+1 To dimL Do
-        If (V[j].cod < V[k].cod) Then
-          k := j;
-      O := V[k];
-      V[k] := V[i];
-      V[i] := O;
-    End;
-  WriteLn('*** Vector ordenado por seleccion ***');
+  dimL := 0;
+  cargarVector(V,dimL);
   imprimirVector(V,dimL);
-End;
+End.
 
 Procedure busquedaDicotomica (v: vector; ini,fin: indice; dato:integer; Var pos: indice);
 Begin
@@ -104,42 +94,41 @@ Begin
          pos := -1;
 End;
 
-Procedure buscarOficina(V:vector; dimL: Integer);
+Procedure ordenPorSeleccion(Var V:vector; dimL:rango);
 
 Var 
-  cod,pos: integer;
+  i,j,k: rango;
+  aux: integer;
 Begin
-  pos := 0;
-  write('Ingrese codigo: ');
-  readln(cod);
-  busquedaDicotomica(V,1,dimL,cod,pos);
-  If (pos = 0) Then
-    WriteLn('No se encontro la oficina')
-  Else
-    WriteLn('El propietario de esta propiedad es: ',V[pos].dni);
+  For i:=1 To dimL-1 Do
+    Begin
+      k := i;
+      For j:= i+1 To dimL Do
+        If V[j] < V[k] Then
+          k := j;
+      aux := V[k];
+      V[k] := V[i];
+      V[i] := aux;
+    End;
+  WriteLn('*** Vector ordenado por seleccion ***');
 End;
 
-Function calcularTotal(V: vector; dimL: integer): real;
-Begin
-  If (dimL>0) Then
-    calcularTotal := calcularTotal(V,dimL-1) + V[dimL].valor
-  Else
-    calcularTotal := 0;
-End;
 
-Procedure totalExpensas(V: vector ; dimL: Integer);
-Begin
-  WriteLn('El monto total de expensas es: ',calcularTotal(V,dimL): 4: 2);
-End;
+Procedure ordenPorInsercion (Var V:vectOficinas; dimL:integer);
 
 Var 
-  V: vector;
-  dimL: integer;
+  i,j: integer;
+  actual: oficina;
 Begin
-  dimL := 0;
-  cargarVector(V,dimL);
-  //   imprimirVector(V,dimL);
-  ordenPorSeleccion(V,dimL);
-  //   buscarOficina(V,dimL);
-  totalExpensas(V,dimL);
-End.
+  For i:=2 To dimL Do
+    Begin
+      actual := V[i];
+      j := i-1;
+      While (j>0) And (V[j].cod>actual.cod) Do
+        Begin
+          V[j+1] := V[j];
+          j := j-1;
+        End;
+      V[j+1] := actual;
+    End;
+End;

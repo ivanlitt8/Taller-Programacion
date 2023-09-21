@@ -14,10 +14,12 @@
 // se encontró la oficina.
 // d) Un módulo recursivo que retorne el monto total de las expensas.
 
-Program ejercicio1;
+
+
+program practica1;
 
 Const 
-  dimF = 5;
+  dimF = 8;
 
 Type 
 
@@ -48,7 +50,7 @@ Var
 Begin
   Randomize;
   leerOficina(O);
-  While (O.cod<>-1) And (dimL < dimF) Do
+  While (dimL < dimF) and (O.cod<>-1) Do
     Begin
       dimL := dimL + 1;
       V[dimL] := O;
@@ -70,76 +72,12 @@ Begin
     End;
 End;
 
-Procedure ordenPorSeleccion(Var V: vector; dimL: Integer);
-
-Var 
-  i,j,k: rango;
-  O: oficina;
-Begin
-  For i:= 1 To dimL-1 Do
-    Begin
-      k := i;
-      For j:= i+1 To dimL Do
-        If (V[j].cod < V[k].cod) Then
-          k := j;
-      O := V[k];
-      V[k] := V[i];
-      V[i] := O;
-    End;
-  WriteLn('*** Vector ordenado por seleccion ***');
-  imprimirVector(V,dimL);
-End;
-
-Procedure busquedaDicotomica (v: vector; ini,fin: indice; dato:integer; Var pos: indice);
-Begin
-  pos := (ini + fin) Div 2;
-  If (ini<= fin) Then
-    Begin
-      If (v[pos]>dato) And (dato <> v[pos]) Then
-        busquedaDicotomica (v, ini, pos-1, dato, pos)
-      Else If (v[pos]< dato) Then
-             busquedaDicotomica(v, pos+1, fin, dato, pos);
-    End
-  Else If (v[pos]<>dato) Then
-         pos := -1;
-End;
-
-Procedure buscarOficina(V:vector; dimL: Integer);
-
-Var 
-  cod,pos: integer;
-Begin
-  pos := 0;
-  write('Ingrese codigo: ');
-  readln(cod);
-  busquedaDicotomica(V,1,dimL,cod,pos);
-  If (pos = 0) Then
-    WriteLn('No se encontro la oficina')
-  Else
-    WriteLn('El propietario de esta propiedad es: ',V[pos].dni);
-End;
-
-Function calcularTotal(V: vector; dimL: integer): real;
-Begin
-  If (dimL>0) Then
-    calcularTotal := calcularTotal(V,dimL-1) + V[dimL].valor
-  Else
-    calcularTotal := 0;
-End;
-
-Procedure totalExpensas(V: vector ; dimL: Integer);
-Begin
-  WriteLn('El monto total de expensas es: ',calcularTotal(V,dimL): 4: 2);
-End;
-
 Var 
   V: vector;
   dimL: integer;
 Begin
   dimL := 0;
   cargarVector(V,dimL);
-  //   imprimirVector(V,dimL);
-  ordenPorSeleccion(V,dimL);
-  //   buscarOficina(V,dimL);
-  totalExpensas(V,dimL);
-End.
+  imprimirVector(V,dimL);
+end.
+
