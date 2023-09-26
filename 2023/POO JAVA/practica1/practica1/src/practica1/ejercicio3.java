@@ -30,7 +30,9 @@ public class ejercicio3 {
      */
     public static void main(String[] args) {
         
-        int [][] matriz = new int[5][5];
+        int filas = 5, col = 5;
+        
+        int [][] matriz = new int[filas][col];
         
         int i,j,k;
         GeneradorAleatorio.iniciar();
@@ -45,14 +47,14 @@ public class ejercicio3 {
             }
             System.out.println("");
         }
-        
+        /*
         System.out.println("------------------------------------");
         int total = 0;
         for(j=0;j<5;j++){
             total = total + matriz[0][j];
         }        
         System.out.println("La suma de los elementos de la fila 1 es: "+total);
-        
+        */
         int [] totalJ = new int[5];
         int tot;
         for(j=0;j<5;j++){
@@ -62,26 +64,34 @@ public class ejercicio3 {
             }
             totalJ[j]= tot;
         }
+        /**
         System.out.println("------------------------------------");
         System.out.println("Suma de los elementos de las columnas:");
         for(k=0;k<5;k++){
             
             System.out.println("columna "+(k+1)+": "+totalJ[k]);
         }
+        */
         
         System.out.println("Ingrese valor entero para buscar en la matriz");
         int valor = PaqueteLectura.Lector.leerInt();
-        boolean state = false;
-        for(i=0;i<5;i++){
-            for(j=0;j<5;j++){
-                if(matriz[i][j] == valor){
-                    state = true;
-                    System.out.println("El valor existe en la posicion :"+(i+1)+","+(j+1));
+        boolean encontrado = false;
+        int colAct = 0;
+        int filAct = 0;
+        while((!encontrado)&&(colAct<col)){
+            filAct = 0;
+            while((!encontrado)&&(filAct<filas)){
+                if(matriz[filAct][colAct]==valor){
+                    encontrado = true;
                 }
+                filAct++;
             }
+            colAct++;
         }
-        if(!state)
+        if(!encontrado){
             System.out.println("El valor no existe en la matriz");
-        
+        }else{
+            System.out.println("El valor existe fila :"+filAct+", columna :"+colAct);
+        }
     }
 }

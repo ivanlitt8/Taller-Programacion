@@ -27,11 +27,6 @@ public class ejercicio2 {
         
         Persona[] personas = new Persona[dimF];
         
-        
-        for(i=0;i<dimF;i++){
-            personas[i]= null;
-        }
-        
         String nombre;
         int dni;
         int edad = -1;
