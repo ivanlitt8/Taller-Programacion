@@ -12,7 +12,7 @@ import PaqueteLectura.GeneradorAleatorio;
  */
 public class Hotel {
     private int dimF;
-    private Habitacion[] habitaciones; // Se inicializa por defecto
+    private Habitacion[] habitaciones; // Se inicializa por defecto ?
 
     public Hotel(int dimF) {
         this.dimF = dimF;
