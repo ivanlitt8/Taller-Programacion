@@ -17,7 +17,6 @@ public class Trabajador extends Persona{
         this.trabajo = trabajo;
     }  
     
-
     public String getTrabajo() {
         return trabajo;
     }

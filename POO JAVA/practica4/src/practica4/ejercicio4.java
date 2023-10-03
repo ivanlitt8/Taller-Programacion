@@ -29,7 +29,7 @@ public class ejercicio4 {
 
         System.out.println(visor.getMostradas());
         
-        // mostrar es un metodo de la clase visor muestra y que cuenta las veces que se 
+        // mostrar es un metodo de la clase visor que cuenta las veces que se 
         // mostro una figura, getMostradas devuelve dicho contador para el visor.
     }
     

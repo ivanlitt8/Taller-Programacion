@@ -9,6 +9,7 @@ package practica4;
  *
  * @author ivanl
  */
+import PaqueteLectura.GeneradorAleatorio;
 public class ejercicio6 {
 
     /**
@@ -18,6 +19,7 @@ public class ejercicio6 {
         que permita reportar el promedio histórico por años y otra que permita reportar el 
         promedio histórico por meses. Esto se detalla más adelante.
         De la estación, interesa conocer: nombre, y latitud y longitud donde se encuentra.
+        
         Implemente las clases, constructores y métodos que considere necesarios para:
         
         a) Crear el sistema de registro/reporte, que funcionará en una determinada estación, 
@@ -62,6 +64,7 @@ public class ejercicio6 {
         consecutivos a partir del 2021, para la estación La Plata (latitud -34.921 y longitud -
         57.955). Cargue todas las temperaturas (para todos los meses y años). Informe los 
         promedios anuales, y el mes y año en que se registró la mayor temperatura.
+        
         Luego cree un Sistema con informe mensual para 4 años a partir de 2020, para la 
         estación Mar del Plata (latitud -38.002 y longitud -57.556). Cargue todas las 
         temperaturas (para todos los meses y años). Informe los promedios mensuales, y el 
@@ -70,7 +73,21 @@ public class ejercicio6 {
         NOTA: Preste atención de no violar el encapsulamiento al resolver el ejercicio. 
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        
+        GeneradorAleatorio.iniciar();
+        
+        Estacion estacion1 = new Estacion("La Plata", -34.921, -57.955);
+        Estacion estacion2 = new Estacion("Mar del Plata", -38.002, -57.556);
+        
+        RepAnual reporteAnual = new RepAnual(2021, 3, estacion1);
+        RepMensual reporteMensual = new RepMensual(2020, 4, estacion2);
+
+        System.out.println(reporteAnual);
+        System.out.println(reporteAnual.mayorTemp());
+        
+        System.out.println(reporteMensual);
+        System.out.println(reporteMensual.mayorTemp());
+        
     }
     
 }
