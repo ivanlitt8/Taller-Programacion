@@ -60,13 +60,12 @@ public class ejercicio4 {
             }
         }
         
-        hotel.imprimirHotel();
+        System.out.println(hotel); 
         
         System.out.println("Ingrese monto de aumento: ");
         hotel.setAumento(Lector.leerDouble());
         
-        hotel.imprimirHotel();
-                
+        System.out.println(hotel);              
 
     }
     

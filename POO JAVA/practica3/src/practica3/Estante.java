@@ -9,8 +9,8 @@ package practica3;
  * Un estante almacena a lo sumo 20 libros. Implemente un constructor que
  * permita iniciar el estante sin libros. Provea métodos para: (i) devolver la
  * cantidad de libros que almacenados (ii) devolver si el estante está lleno
- * (iii) agregar un libro al estante (iv) devolver el libro con un título
- * particular que se recibe.
+ * (iii) agregar un libro al estante (iv) devolver el libro con un título particular
+ * que se recibe.
  */
 public class Estante {
 
@@ -28,9 +28,6 @@ public class Estante {
         if (dimL < 19) {
             vector[dimL] = libro;
             this.dimL++;
-            System.out.println("-- Libro agregado --");
-        } else {
-            System.out.println("El estante esta lleno");
         }
     }
 

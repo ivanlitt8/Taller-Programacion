@@ -29,6 +29,5 @@ public class Trabajador extends Persona{
     public String toString() {
         return super.toString()+" Soy: "+ trabajo + ".";
     }
-    
-    
+   
 }

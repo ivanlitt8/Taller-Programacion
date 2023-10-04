@@ -45,9 +45,12 @@ public class Hotel {
         }
     }
 
-    public void imprimirHotel() {
+    @Override
+    public String toString() {
+        String aux = "";
         for (int i=0;i<dimF;i++){
-            System.out.println("Habitacion "+(i+1)+": "+habitaciones[i].getCosto()+ " esta "+habitaciones[i]);
+            aux += "Habitacion "+(i+1)+": "+habitaciones[i].getCosto()+ " esta "+habitaciones[i];
         }
+        return aux;
     }
 }

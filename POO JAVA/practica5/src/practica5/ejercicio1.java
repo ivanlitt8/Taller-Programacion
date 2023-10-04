@@ -52,7 +52,30 @@ public class ejercicio1 {
         
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        
+        Investigador invest1 = new Investigador("Mariana", 1, "Fisica");
+        Investigador invest2 = new Investigador("Genaro", 2, "Matematica");
+        Investigador invest3 = new Investigador("Pedro", 2, "Tecnologia");
+               
+        invest1.agregarSubsidio(5000, "Sub1");
+        invest1.agregarSubsidio(5000, "Sub2");
+        
+        invest2.agregarSubsidio(5000, "Sub1");
+        invest2.agregarSubsidio(5000, "Sub2");
+        
+        invest3.agregarSubsidio(5000, "Sub1");
+        invest3.agregarSubsidio(5000, "Sub2");
+        
+        Proyecto proyecto = new Proyecto("Test", 888, "Jose");
+        
+        proyecto.agregarInvestigador(invest1);
+        proyecto.agregarInvestigador(invest2);
+        proyecto.agregarInvestigador(invest3);
+        
+        invest3.habilitarSubsidios();
+        
+        System.out.println(proyecto);
+        
     }
     
 }

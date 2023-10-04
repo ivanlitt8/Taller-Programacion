@@ -17,15 +17,7 @@ public abstract class Figura {
         setColorRelleno(unCR);
         setColorLinea(unCL);
     }
-    
-    public String toString(){
-        String aux = "Area: " + this.calcularArea() +
-                     " CR: "  + getColorRelleno() + 
-                      " CL: " + getColorLinea();             
-             return aux;
-       }
 
-    
     public String getColorRelleno(){
         return colorRelleno;       
     }
@@ -46,5 +38,11 @@ public abstract class Figura {
         this.colorLinea= "negro";
         this.colorRelleno= "blanco";
     }
-     
+    
+    public String toString(){
+        String aux = "Area: " + this.calcularArea() +
+                     " CR: "  + getColorRelleno() + 
+                      " CL: " + getColorLinea();             
+             return aux;
+    }
 }

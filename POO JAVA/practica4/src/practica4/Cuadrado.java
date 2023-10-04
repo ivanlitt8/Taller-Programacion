@@ -8,7 +8,6 @@ public class Cuadrado extends Figura{
     public Cuadrado(double unLado, String unColorR, String unColorL){
         super(unColorR,unColorL);
         setLado(unLado);
-
     } 
     
     public double getLado(){
@@ -31,7 +30,5 @@ public class Cuadrado extends Figura{
        String aux = super.toString() + 
                     " Lado: " + getLado();
        return aux;
-    }
-
- 
+    } 
 }
