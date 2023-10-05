@@ -69,15 +69,19 @@ public class ejercicio2 {
 
         est2.registrarAuto(1, 3, auto1);
         est2.registrarAuto(2, 2, auto2);
-        est2.registrarAuto(1, 2, auto3);
+        est2.registrarAuto(1, 1, auto3);
         est2.registrarAuto(3, 1, auto4);
         est2.registrarAuto(2, 2, auto5);
         est2.registrarAuto(3, 3, auto6);
         
         System.out.println(est2);
         
+        System.out.println("La cantidad de autos ubicados en la plaza 1 es "+est2.autosEnPlaza(1));
+        
         System.out.println("Ingrese patente a buscar: ");
-        System.out.println(est2.buscarAuto(PaqueteLectura.Lector.leerString()));       
+        System.out.println(est2.buscarAuto(PaqueteLectura.Lector.leerString()));
+        
+        
 
     }
 
