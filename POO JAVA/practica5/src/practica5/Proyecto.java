@@ -54,14 +54,6 @@ public class Proyecto {
     public void setDimL(int dimL) {
         this.dimL = dimL;
     }
-
-    public Investigador[] getEquipo() {
-        return equipo;
-    }
-
-    public void setEquipo(Investigador[] equipo) {
-        this.equipo = equipo;
-    }
     
     public boolean hayEspacio(){
         return (dimL<50);
