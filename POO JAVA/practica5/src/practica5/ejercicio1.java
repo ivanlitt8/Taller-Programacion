@@ -53,9 +53,9 @@ public class ejercicio1 {
      */
     public static void main(String[] args) {
         
-        Investigador invest1 = new Investigador("Mariana", 1, "Fisica");
-        Investigador invest2 = new Investigador("Genaro", 2, "Matematica");
-        Investigador invest3 = new Investigador("Pedro", 2, "Tecnologia");
+        Investigador invest1 = new Investigador("Mariana", 2, "Fisica");
+        Investigador invest2 = new Investigador("Genaro", 5, "Matematica");
+        Investigador invest3 = new Investigador("Pedro", 3, "Tecnologia");
                
         invest1.agregarSubsidio(5000, "Sub1");
         invest1.agregarSubsidio(5000, "Sub2");
