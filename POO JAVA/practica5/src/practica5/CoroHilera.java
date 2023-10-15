@@ -15,6 +15,8 @@ public class CoroHilera extends Coro {
     private int filas;
     private int columnas;
     private int espacios;
+    private int fActual = 0;
+    private int cActual = 0;
     private Corista[][] coro;
 
     public CoroHilera(int filas, int columnas, String nombre, Director director) {
@@ -60,7 +62,9 @@ public class CoroHilera extends Coro {
     @Override
     public void agregarCorista(Corista corista) {
         if(!coroLLeno()){
-            
+            if(cActual<columnas){
+                
+            }
         }
     }
 
