@@ -1,0 +1,39 @@
+programa ejercicio1
+procesos
+  proceso juntar (ES flor:numero; ES vacio: numero)
+  comenzar
+    si (~HayFlorEnLaEsquina)
+      vacio:= vacio + 1
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flor:= flor + 1
+  fin
+  proceso depositar
+  comenzar
+    mientras (HayFlorEnLaBolsa)
+      depositarFlor
+  fin
+areas
+  ciudad1: AreaC(1,1,5,100)
+robots
+  robot tipo1
+  variables
+    flores,vacio: numero
+  comenzar
+    flores:= 0
+    repetir 99
+      juntar(flores,vacio)
+      mover
+    Informar(flores)
+    Informar(vacio)
+  fin
+variables
+  robot1,robot2,robot3: tipo1
+comenzar
+  AsignarArea(robot1,ciudad1)
+  AsignarArea(robot2,ciudad1)
+  AsignarArea(robot3,ciudad1)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,3,1)
+  Iniciar(robot3,5,1)
+fin

@@ -1,0 +1,57 @@
+programa ejercicio3
+procesos
+  proceso recta(E vuelta:numero; ES flores: numero; ES papeles: numero)
+  comenzar
+    repetir vuelta 
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        flores:= flores + 1
+      mientras(HayPapelEnLaEsquina)
+        tomarPapel
+        papeles:= papeles + 1
+      mientras(HayPapelEnLaBolsa)
+        depositarPapel
+      mientras(HayFlorEnLaBolsa)
+        depositarFlor
+      mover
+  fin
+  proceso escalon (E vuelta:numero; ES masPapeles:numero)
+  variables
+    flores,papeles: numero
+  comenzar
+    flores:= 0
+    papeles:= 0
+    recta(vuelta,flores,papeles)
+    derecha
+    recta(vuelta,flores,papeles)
+    repetir 3
+      derecha
+    si (papeles > flores)
+      masPapeles:= masPapeles + 1
+  fin
+areas
+  ciudad1: AreaC(1,1,100,100)
+robots
+  robot tipo1
+  variables
+    masPapeles,vuelta: numero
+  comenzar
+    masPapeles:= 0
+    vuelta:= 1
+    repetir 4
+      escalon(vuelta,masPapeles)
+      vuelta:= vuelta + 1 
+    Informar(masPapeles)
+  fin
+variables
+  robot1: tipo1
+  robot2: tipo1
+  robot3: tipo1
+comenzar
+  AsignarArea(robot1,ciudad1)
+  AsignarArea(robot2,ciudad1)
+  AsignarArea(robot3,ciudad1)
+  Iniciar(robot1,12,14)
+  Iniciar(robot2,17,10)
+  Iniciar(robot3,22,6)
+fin
