@@ -1,0 +1,129 @@
+programa ejercicio3
+procesos
+  proceso giro
+  comenzar
+    repetir 2
+      derecha
+  fin
+  proceso recorridoEquipoA(ES cant: numero)
+  comenzar
+    repetir 9
+      recolectarPapel(cant)
+      mover
+    recolectarPapel(cant)
+  fin
+  proceso recorridoEquipoB(ES cant: numero)
+  comenzar
+    repetir 9
+      recolectarFlor(cant)
+      mover
+    recolectarFlor(cant)
+  fin
+  proceso retroceder
+  comenzar
+    repetir 2
+      derecha
+    mover
+  fin
+  proceso recolectarPapel (ES papeles:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:= papeles + 1
+  fin
+  proceso recolectarFlor (ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+areas
+  ciudad : AreaC(1,1,100,100)
+robots
+  robot recolectorA1
+  variables
+    cant: numero
+  comenzar
+    cant:= 0
+    recorridoEquipoA(cant)
+    retroceder
+    EnviarMensaje(cant,robotA2)
+    RecibirMensaje(cant,*)
+    Pos(1,20)
+    giro
+    recorridoEquipoA(cant)
+    mover
+    recolectarPapel(cant)
+    retroceder
+    EnviarMensaje(cant,robotA2)
+  fin
+  robot recolectorB1
+  variables
+    cant: numero
+  comenzar
+    cant:= 0
+    recorridoEquipoB(cant)
+    retroceder
+    EnviarMensaje(cant,robotB2)
+    RecibirMensaje(cant,*)
+    Pos(5,20)
+    giro
+    recorridoEquipoB(cant)
+    mover
+    recolectarFlor(cant)
+    retroceder
+    EnviarMensaje(cant,robotB2)
+  fin
+  robot recolectorA2
+  variables
+    cant: numero
+  comenzar
+    RecibirMensaje(cant,*)
+    Pos(1,10)
+    repetir 10
+      mover
+      recolectarPapel(cant)
+    retroceder
+    EnviarMensaje(cant,robotA1)
+    RecibirMensaje(cant,*)
+    Pos(1,30)
+    giro
+    repetir 10
+      mover
+      recolectarFlor(cant)
+    Informar(cant)
+  fin
+  robot recolectorB2
+  variables
+    cant: numero
+  comenzar
+    RecibirMensaje(cant,*)
+    Pos(5,10)
+    repetir 10
+      mover
+      recolectarFlor(cant)
+    retroceder
+    EnviarMensaje(cant,robotB1)
+    RecibirMensaje(cant,*)
+    Pos(5,30)
+    giro
+    repetir 10
+      mover
+      recolectarFlor(cant)
+    Informar(cant)
+  fin
+variables
+  robotA1: recolectorA1
+  robotB1: recolectorB1
+  robotA2: recolectorA2
+  robotB2: recolectorB2
+comenzar
+  AsignarArea(robotA1,ciudad)
+  AsignarArea(robotB1,ciudad)
+  AsignarArea(robotA2,ciudad)
+  AsignarArea(robotB2,ciudad)
+  Iniciar(robotA1,1,1)
+  Iniciar(robotB1,5,1)
+  Iniciar(robotA2,2,10)
+  Iniciar(robotB2,6,10)
+fin

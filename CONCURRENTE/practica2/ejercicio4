@@ -1,0 +1,127 @@
+programa ejercicio4
+procesos
+  proceso recoleccion (ES cant: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cant:= cant + 1
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cant:= cant + 1
+  fin
+  proceso maximo(ES ganador:numero; E id: numero; E cant: numero; ES max:numero)
+  comenzar
+    si(cant>=max)
+      max:= cant
+      ganador:= id
+  fin
+areas
+  cuadrante : AreaPC(25,25,75,75)
+  areaF: AreaP(1,1,1,1)
+  area1: AreaP(25,1,25,1)
+  area2: AreaP(30,1,30,1)
+  area3: AreaP(35,1,35,1)
+  area4: AreaP(40,1,40,1)
+robots
+  robot fiscalizador
+  variables
+    max,id,cant,ganador: numero
+    ok: boolean
+  comenzar
+    max:= 0
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    EnviarMensaje(4,robot4)
+    repetir 10
+      Random(id,1,4)
+      si(id=1)
+        EnviarMensaje(V,robot1)
+      si(id=2)
+        EnviarMensaje(V,robot2)
+      si(id=3)
+        EnviarMensaje(V,robot3)
+      sino
+        EnviarMensaje(V,robot4)
+      RecibirMensaje(ok,*)
+    EnviarMensaje(F,robot1)
+    EnviarMensaje(F,robot2)
+    EnviarMensaje(F,robot3)
+    EnviarMensaje(F,robot4)
+    repetir 4
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(cant,robot1)
+      si(id=2)
+        RecibirMensaje(cant,robot2)
+      si(id=3)
+        RecibirMensaje(cant,robot3)
+      sino
+        RecibirMensaje(cant,robot4)
+      maximo(ganador,id,cant,max)
+    si (ganador=1)
+      EnviarMensaje(V,robot1)
+      EnviarMensaje(F,robot2) 
+      EnviarMensaje(F,robot3)
+      EnviarMensaje(F,robot4)
+    sino
+      si (ganador=2)  
+        EnviarMensaje(V,robot2)
+        EnviarMensaje(F,robot1) 
+        EnviarMensaje(F,robot3)
+        EnviarMensaje(F,robot4)
+      sino
+        si (ganador=3)
+          EnviarMensaje(V,robot3)
+          EnviarMensaje(F,robot2) 
+          EnviarMensaje(F,robot1)
+          EnviarMensaje(F,robot4)
+        sino
+          EnviarMensaje(V,robot4)
+          EnviarMensaje(F,robot2) 
+          EnviarMensaje(F,robot3)
+          EnviarMensaje(F,robot1) 
+  fin
+  robot recolector
+  variables
+    cant,id,av,ca,avAct,caAct:numero
+    ok: boolean
+  comenzar
+    cant:=0
+    avAct:=PosAv
+    caAct:=PosCa
+    RecibirMensaje(id,fiscal)
+    RecibirMensaje(ok,fiscal)
+    mientras(ok)
+      Random(av,25,75)
+      Random(ca,25,75)
+      Pos(av,ca)
+      recoleccion(cant)
+      Pos(avAct,caAct)
+      EnviarMensaje(V,fiscal)
+      RecibirMensaje(ok,fiscal)
+    EnviarMensaje(id,fiscal)
+    EnviarMensaje(cant,fiscal)
+    RecibirMensaje(ok,fiscal)
+    si (ok)
+      Pos(50,50)  
+  fin
+variables
+  robot1,robot2,robot3,robot4: recolector
+  fiscal: fiscalizador
+comenzar
+  AsignarArea(fiscal,areaF)
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,area2)
+  AsignarArea(robot3,area3)
+  AsignarArea(robot4,area4)
+  AsignarArea(robot1,cuadrante)
+  AsignarArea(robot2,cuadrante)
+  AsignarArea(robot3,cuadrante)
+  AsignarArea(robot4,cuadrante)
+  Iniciar(fiscal,1,1)
+  Iniciar(robot1,25,1)
+  Iniciar(robot2,30,1)
+  Iniciar(robot3,35,1)
+  Iniciar(robot4,40,1)
+fin

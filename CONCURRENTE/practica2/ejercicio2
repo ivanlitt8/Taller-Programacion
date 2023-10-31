@@ -1,0 +1,74 @@
+programa ejercicio2
+procesos
+  proceso recolectar (ES papeles:numero; ES flores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      papeles:= papeles + 1 
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      flores:= flores + 1
+  fin
+  proceso hacerRecta(ES papeles:numero; ES flores:numero)
+  comenzar
+    recolectar(papeles,flores)
+    mover
+    recolectar(papeles,flores)
+  fin
+  proceso hacerAlto(ES papeles: numero; ES flores: numero)
+  variables
+    alto: numero
+  comenzar
+    Random(alto,1,5)
+    repetir alto
+      hacerRecta(papeles,flores)  
+  fin
+  proceso hacerEscalera(ES cant: numero)
+  variables
+    flores,papeles: numero
+  comenzar
+    repetir 4
+      flores:= 0
+      papeles:= 0
+      hacerAlto(papeles,flores)
+      derecha
+      hacerRecta(papeles,flores)
+      repetir 3
+        derecha
+      si (papeles<flores)
+        cant:= cant+1
+  fin
+areas
+  ciudad : AreaC(1,1,100,100)
+robots
+  robot tipoFiscal
+  variables
+    cant,max,flores: numero
+  comenzar
+    max:= 0
+    repetir 3
+      RecibirMensaje(flores,*)
+      cant:= cant + flores
+    Informar(cant)
+  fin
+  robot recolector
+  variables
+    cant,id: numero
+  comenzar
+    cant:= 0
+    hacerEscalera(cant)
+    EnviarMensaje(cant,fiscal)
+  fin
+variables
+  robot1,robot2,robot3: recolector
+  fiscal: tipoFiscal
+comenzar
+  AsignarArea(robot1,ciudad)
+  AsignarArea(robot2,ciudad)
+  AsignarArea(robot3,ciudad)
+  AsignarArea(fiscal,ciudad)
+  Iniciar(robot1,2,1)
+  Iniciar(robot2,7,1)
+  Iniciar(robot3,12,1)
+  Iniciar(fiscal,1,1)
+fin

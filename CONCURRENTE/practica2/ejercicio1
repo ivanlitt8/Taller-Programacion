@@ -1,0 +1,64 @@
+programa ejercicio1
+procesos
+  proceso limpiarFlores(ES cantidad:numero)
+  comenzar
+    repetir 9
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        cantidad:= cantidad+1
+      mover
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantidad:= cantidad+1
+  fin
+areas
+  ciudad : AreaC(1,1,100,100)
+robots
+  robot tipoFiscal
+  variables
+    cant,max,ganador,id: numero
+  comenzar
+    max:= 0
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    EnviarMensaje(4,robot4)
+    EnviarMensaje(5,robot5)
+    EnviarMensaje(6,robot6)
+    repetir 6
+      RecibirMensaje(id,*)
+      RecibirMensaje(cant,*)
+      si (cant>max)
+        max:= cant
+        ganador:= id
+    Informar(ganador)
+  fin
+  robot recolector
+  variables
+    cant,id: numero
+  comenzar
+    cant:= 0
+    RecibirMensaje(id,fiscal)
+    limpiarFlores(cant)
+    EnviarMensaje(id,fiscal)
+    EnviarMensaje(cant,fiscal)
+  fin
+variables
+  robot1,robot2,robot3,robot4,robot5,robot6: recolector
+  fiscal: tipoFiscal
+comenzar
+  AsignarArea(robot1,ciudad)
+  AsignarArea(robot2,ciudad)
+  AsignarArea(robot3,ciudad)
+  AsignarArea(robot4,ciudad)
+  AsignarArea(robot5,ciudad)
+  AsignarArea(robot6,ciudad)
+  AsignarArea(fiscal,ciudad)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,2,11)
+  Iniciar(robot3,3,21)
+  Iniciar(robot4,4,31)
+  Iniciar(robot5,5,41)
+  Iniciar(robot6,6,51)
+  Iniciar(fiscal,2,1)
+fin
