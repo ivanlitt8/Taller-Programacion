@@ -1,0 +1,82 @@
+programa ejercicio6
+procesos
+  proceso maximaCalle(ES ganador:numero ; E id:numero; E calle:numero ; ES max:numero)
+  comenzar
+    si(calle>max)
+      max:= calle
+      ganador:= id
+  fin
+areas
+  zonaC: AreaC(11,11,11,11)
+  zona1: AreaP(4,1,4,100)
+  zona2: AreaP(6,1,6,100)
+  zona3: AreaP(8,1,8,100)
+  zona4: AreaP(10,1,10,100)
+  zonaF: AreaP(1,1,1,1)
+robots
+  robot recolector
+  variables
+    avAct,caAct,id: numero
+    hayPapel: boolean
+  comenzar
+    RecibirMensaje(id,fiscal)
+    hayPapel:= V
+    mientras(hayPapel)&(PosCa<100)
+      avAct:= PosAv
+      caAct:= PosCa
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      si(HayPapelEnLaEsquina)
+        tomarPapel
+      sino
+        hayPapel:= F
+      Pos(avAct,caAct)
+      LiberarEsquina(11,11)
+      si(HayPapelEnLaBolsa)
+        depositarPapel
+        mover
+    EnviarMensaje(id,fiscal)
+    EnviarMensaje(caAct,fiscal)
+  fin
+  robot coord
+  variables
+    id,ganador,max,calle:numero
+  comenzar
+    EnviarMensaje(1,rob1)
+    EnviarMensaje(2,rob2)
+    EnviarMensaje(3,rob3)
+    EnviarMensaje(4,rob4)
+    repetir 4
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(calle,rob1)
+      sino
+        si(id=2)
+          RecibirMensaje(calle,rob2)
+        sino
+          si(id=3)
+            RecibirMensaje(calle,rob3)
+          sino
+            RecibirMensaje(calle,rob4)
+    maximaCalle(ganador,id,calle,max)
+    Informar(ganador)
+  fin
+variables
+  rob1,rob2,rob3,rob4: recolector
+  fiscal: coord
+comenzar
+  AsignarArea(rob1,zonaC)
+  AsignarArea(rob2,zonaC)
+  AsignarArea(rob3,zonaC)
+  AsignarArea(rob4,zonaC)
+  AsignarArea(rob1,zona1)
+  AsignarArea(rob2,zona2)
+  AsignarArea(rob3,zona3)
+  AsignarArea(rob4,zona4)
+  AsignarArea(fiscal,zonaF)
+  Iniciar(fiscal,1,1)
+  Iniciar(rob1,4,1)
+  Iniciar(rob2,6,1)
+  Iniciar(rob3,8,1)
+  Iniciar(rob4,10,1)
+fin

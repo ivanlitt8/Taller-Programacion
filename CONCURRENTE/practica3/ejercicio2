@@ -1,0 +1,119 @@
+programa ejercicio2
+procesos
+  proceso limpiarFlores(ES cant: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cant:= cant + 1
+  fin
+  proceso limpiarPapeles(ES cant: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cant:= cant + 1
+  fin
+  proceso hacerEscalonF( E long:numero ; ES cant: numero)
+  comenzar
+    recta(long)
+    derecha
+    limpiarFlores(cant)
+    recta(long)
+  fin
+  proceso recta(E long: numero)
+  comenzar
+    repetir long
+      mover
+  fin
+  proceso hacerEscalonP( E long:numero ; ES cant: numero)
+  comenzar
+    recta(long)
+    repetir 3
+      derecha
+    limpiarPapeles(cant)
+    recta(long)
+  fin
+  proceso giro
+  comenzar
+    repetir 2
+      derecha
+  fin
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot corredor1
+  variables
+    long,id,cant: numero
+  comenzar
+    long:= 5
+    cant:= 0
+    RecibirMensaje(id,fiscal)
+    repetir 4
+      hacerEscalonF(long,cant)
+      repetir 3
+        derecha
+      long:= long - 1
+    BloquearEsquina(16,16)
+    hacerEscalonF(long,cant)
+    EnviarMensaje(id,fiscal)
+    giro
+    mover
+    LiberarEsquina(16,16)
+    long:= 2
+    repetir 4
+      hacerEscalonF(long,cant)
+      repetir 3
+        derecha
+      long:= long + 1
+    Informar(cant)
+    EnviarMensaje(V,fiscal)
+  fin
+  robot corredor2
+  variables
+    long,id,cant: numero
+  comenzar
+    cant:= 0
+    long:= 5
+    RecibirMensaje(id,fiscal)
+    repetir 4
+      hacerEscalonP(long,cant)
+      derecha
+      long:= long - 1
+    BloquearEsquina(16,16)
+    hacerEscalonP(long,cant)
+    EnviarMensaje(id,fiscal)
+    giro
+    mover
+    LiberarEsquina(16,16)
+    long:= 2
+    repetir 4
+      hacerEscalonP(long,cant)
+      derecha
+      long:= long + 1
+    Informar(cant)
+    EnviarMensaje(V,fiscal)
+  fin
+  robot jefe
+  variables
+    ganador,segundo: numero
+    llegada: boolean
+  comenzar
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    RecibirMensaje(ganador,*)
+    RecibirMensaje(segundo,*)
+    RecibirMensaje(llegada,*)
+    RecibirMensaje(llegada,*)
+    Informar(ganador)
+  fin
+variables
+  robot1: corredor1
+  robot2: corredor2
+  fiscal: jefe
+comenzar
+  AsignarArea(robot1,ciudad)
+  AsignarArea(robot2,ciudad)
+  AsignarArea(fiscal,ciudad)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,31,1)
+  Iniciar(fiscal,15,1)
+fin

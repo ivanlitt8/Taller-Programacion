@@ -1,0 +1,95 @@
+programa ejercicio3
+procesos
+  proceso maximo(ES ganador:numero ; E id:numero; ES max:numero ; E cant:numero)
+  comenzar
+    si(cant>max)
+      max:= cant
+      ganador:= id
+  fin
+areas
+  cuadrante: AreaC(2,2,10,10)
+  zona1: AreaP(2,1,2,1)
+  zona2: AreaP(3,1,3,1)
+  zona3: AreaP(4,1,4,1)
+  zona4: AreaP(5,1,5,1)
+  zonaF: AreaP(1,1,1,1)
+robots
+  robot recolector
+  variables
+    avAct,caAct,av,ca,id,cant: numero
+    hayFlor: boolean
+  comenzar
+    avAct:= PosAv
+    caAct:= PosCa
+    cant:= 0
+    RecibirMensaje(id,fiscal)
+    RecibirMensaje(av,fiscal)
+    RecibirMensaje(ca,fiscal)
+    hayFlor:= V
+    mientras(hayFlor)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      si(HayFlorEnLaEsquina)
+        tomarFlor
+        cant:= cant + 1
+      sino
+        hayFlor:= F
+      Pos(avAct,caAct)
+      LiberarEsquina(av,ca)
+    EnviarMensaje(id,fiscal)
+    EnviarMensaje(cant,fiscal)
+  fin
+  robot robF
+  variables
+    av,ca,id,cant,ganador,max:numero
+  comenzar
+    max:= 0
+    ganador:= 0
+    Random(av,2,10)
+    Random(ca,2,10)
+    EnviarMensaje(1,rob1)
+    EnviarMensaje(2,rob2)
+    EnviarMensaje(3,rob3)
+    EnviarMensaje(4,rob4)
+    EnviarMensaje(av,rob1)
+    EnviarMensaje(ca,rob1)
+    EnviarMensaje(av,rob2)
+    EnviarMensaje(ca,rob2)
+    EnviarMensaje(av,rob3)
+    EnviarMensaje(ca,rob3)
+    EnviarMensaje(av,rob4)
+    EnviarMensaje(ca,rob4)
+    repetir 4
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(cant,rob1)
+      sino
+        si(id=2)
+          RecibirMensaje(cant,rob2)
+        sino
+          si(id=3)
+            RecibirMensaje(cant,rob3)
+          sino
+            RecibirMensaje(cant,rob4)
+      maximo(ganador,id,max,cant)
+    Informar(ganador)
+  fin
+variables
+  rob1,rob2,rob3,rob4: recolector
+  fiscal: robF
+comenzar
+  AsignarArea(rob1,cuadrante)
+  AsignarArea(rob2,cuadrante)
+  AsignarArea(rob3,cuadrante)
+  AsignarArea(rob4,cuadrante)
+  AsignarArea(rob1,zona1)
+  AsignarArea(rob2,zona2)
+  AsignarArea(rob3,zona3)
+  AsignarArea(rob4,zona4)
+  AsignarArea(fiscal,zonaF)
+  Iniciar(rob1,2,1)
+  Iniciar(rob2,3,1)
+  Iniciar(rob3,4,1)
+  Iniciar(rob4,5,1)
+  Iniciar(fiscal,1,1)
+fin

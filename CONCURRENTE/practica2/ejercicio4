@@ -16,7 +16,7 @@ procesos
       ganador:= id
   fin
 areas
-  cuadrante : AreaPC(25,25,75,75)
+  cuadrante : AreaC(25,25,75,75)
   areaF: AreaP(1,1,1,1)
   area1: AreaP(25,1,25,1)
   area2: AreaP(30,1,30,1)
@@ -37,12 +37,14 @@ robots
       Random(id,1,4)
       si(id=1)
         EnviarMensaje(V,robot1)
-      si(id=2)
-        EnviarMensaje(V,robot2)
-      si(id=3)
-        EnviarMensaje(V,robot3)
       sino
-        EnviarMensaje(V,robot4)
+        si(id=2)
+          EnviarMensaje(V,robot2)
+        sino
+          si(id=3)
+            EnviarMensaje(V,robot3)
+          sino
+            EnviarMensaje(V,robot4)
       RecibirMensaje(ok,*)
     EnviarMensaje(F,robot1)
     EnviarMensaje(F,robot2)
@@ -52,12 +54,14 @@ robots
       RecibirMensaje(id,*)
       si(id=1)
         RecibirMensaje(cant,robot1)
-      si(id=2)
-        RecibirMensaje(cant,robot2)
-      si(id=3)
-        RecibirMensaje(cant,robot3)
       sino
-        RecibirMensaje(cant,robot4)
+        si(id=2)
+          RecibirMensaje(cant,robot2)
+        sino
+          si(id=3)
+            RecibirMensaje(cant,robot3)
+          sino
+            RecibirMensaje(cant,robot4)
       maximo(ganador,id,cant,max)
     si (ganador=1)
       EnviarMensaje(V,robot1)

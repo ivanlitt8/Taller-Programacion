@@ -46,15 +46,10 @@ robots
   comenzar
     cant:= 0
     recorridoEquipoA(cant)
-    retroceder
     EnviarMensaje(cant,robotA2)
     RecibirMensaje(cant,*)
-    Pos(1,20)
-    giro
+    Pos(1,21)
     recorridoEquipoA(cant)
-    mover
-    recolectarPapel(cant)
-    retroceder
     EnviarMensaje(cant,robotA2)
   fin
   robot recolectorB1
@@ -63,15 +58,10 @@ robots
   comenzar
     cant:= 0
     recorridoEquipoB(cant)
-    retroceder
     EnviarMensaje(cant,robotB2)
     RecibirMensaje(cant,*)
-    Pos(5,20)
-    giro
+    Pos(5,21)
     recorridoEquipoB(cant)
-    mover
-    recolectarFlor(cant)
-    retroceder
     EnviarMensaje(cant,robotB2)
   fin
   robot recolectorA2
@@ -79,18 +69,12 @@ robots
     cant: numero
   comenzar
     RecibirMensaje(cant,*)
-    Pos(1,10)
-    repetir 10
-      mover
-      recolectarPapel(cant)
-    retroceder
+    Pos(1,11)
+    recorridoEquipoA(cant)
     EnviarMensaje(cant,robotA1)
     RecibirMensaje(cant,*)
-    Pos(1,30)
-    giro
-    repetir 10
-      mover
-      recolectarFlor(cant)
+    Pos(1,31)
+    recorridoEquipoA(cant)
     Informar(cant)
   fin
   robot recolectorB2
@@ -98,18 +82,12 @@ robots
     cant: numero
   comenzar
     RecibirMensaje(cant,*)
-    Pos(5,10)
-    repetir 10
-      mover
-      recolectarFlor(cant)
-    retroceder
+    Pos(5,11)
+    recorridoEquipoB(cant)
     EnviarMensaje(cant,robotB1)
     RecibirMensaje(cant,*)
-    Pos(5,30)
-    giro
-    repetir 10
-      mover
-      recolectarFlor(cant)
+    Pos(5,31)
+    recorridoEquipoB(cant)
     Informar(cant)
   fin
 variables
@@ -124,6 +102,6 @@ comenzar
   AsignarArea(robotB2,ciudad)
   Iniciar(robotA1,1,1)
   Iniciar(robotB1,5,1)
-  Iniciar(robotA2,2,10)
-  Iniciar(robotB2,6,10)
+  Iniciar(robotA2,1,11)
+  Iniciar(robotB2,5,11)
 fin

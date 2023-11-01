@@ -1,0 +1,84 @@
+programa ejercicio1
+procesos
+  proceso limpiarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso limpiarPapeles
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+areas
+  areaF : AreaPC(1,1,5,10)
+  areaP: AreaPC(6,1,10,9)
+  areaF1: AreaP(6,10,6,10)
+  areaF2: AreaP(7,10,7,10)
+  areaP1: AreaP(8,10,8,10)
+  areaP2: AreaP(9,10,9,10)
+  areaD: AreaC(10,10,10,10)
+robots
+  robot floreros
+  variables
+    av,ca,avAct,caAct: numero
+  comenzar
+    avAct:= PosAv
+    caAct:= PosCa
+    repetir 5
+      Random(av,1,5)
+      Random(ca,1,10)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      limpiarFlores
+      Pos(avAct,caAct)
+      LiberarEsquina(av,ca)
+    mientras(HayFlorEnLaBolsa)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarFlor
+      Pos(avAct,caAct)
+      LiberarEsquina(10,10)
+  fin
+  robot papeleros
+  variables
+    av,ca,avAct,caAct: numero
+  comenzar
+    avAct:= PosAv
+    caAct:= PosCa
+    repetir 3
+      Random(av,6,10)
+      Random(ca,1,9)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      limpiarPapeles
+      Pos(avAct,caAct)
+      LiberarEsquina(av,ca)
+    mientras(HayPapelEnLaBolsa)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarPapel
+      Pos(avAct,caAct)
+      LiberarEsquina(10,10)
+  fin
+variables
+  robotP1,robotP2: papeleros
+  robotF1,robotF2: floreros
+comenzar
+  AsignarArea(robotP1,areaP1)
+  AsignarArea(robotP2,areaP2)
+  AsignarArea(robotF1,areaF1)
+  AsignarArea(robotF2,areaF2)
+  AsignarArea(robotF1,areaF)
+  AsignarArea(robotF2,areaF)
+  AsignarArea(robotP1,areaP)
+  AsignarArea(robotP2,areaP)
+  AsignarArea(robotF1,areaD)
+  AsignarArea(robotF2,areaD)
+  AsignarArea(robotP1,areaD)
+  AsignarArea(robotP2,areaD)
+  Iniciar(robotF1,6,10)
+  Iniciar(robotF2,7,10)
+  Iniciar(robotP1,8,10)
+  Iniciar(robotP2,9,10)
+fin
