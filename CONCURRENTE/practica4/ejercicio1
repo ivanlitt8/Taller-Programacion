@@ -1,0 +1,59 @@
+programa ejercicio1
+procesos
+  proceso
+  comenzar
+  fin
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot cliente
+  variables
+    
+  comenzar
+    INICIO: calcularRandom flores
+    Enviar ID al servidor
+    Enviar cantFlores al servidor
+    Enviar mi Avenida actua
+    Enviar Calle siguiente
+    Esperar ACK del servidor
+    Ir a la esquina Avenida,Calle
+    JuntarFlores
+    Volver a la esquina
+    Avanzar dejando flores
+    Si lleguÃƒÂ© a la avenida 100
+      enviar 0 al servidor
+    sino
+      Volver a INICIO
+  fin
+  robot servidor
+  variables
+    
+  comenzar
+    INICIO: Recibir ID
+    Recibir N Flores de ID
+    si (flores <> 0)
+      recibir avenida de ID
+      recibir calle de ID
+      pos(avenida,calle)
+      depositar N flores
+      volver a (100,100)
+      enviar ACK a robot ID
+      volver a INICIO
+    sino
+      contar un robot terminado
+      si terminaron los 3 robots
+        terminar
+  fin
+variables
+  cli1,cli2,cli3: cliente
+  serv: servidor
+comenzar
+  AsignarArea(cli1,ciudad)
+  AsignarArea(cli2,ciudad)
+  AsignarArea(cli3,ciudad)
+  AsignarArea(serv,ciudad)
+  Iniciar(serv,100,100)
+  Iniciar(cli1,1,1)
+  Iniciar(cli2,2,1)
+  Iniciar(cli3,3,1)
+fin
