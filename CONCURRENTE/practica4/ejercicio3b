@@ -1,0 +1,70 @@
+programa ejercicio3b
+procesos 
+  proceso enviarMjes(E id:numero ; E valor : boolean)
+  comenzar
+    si (id = 1)
+      EnviarMensaje(valor,rec2)
+      EnviarMensaje(valor,rec3)
+    sino
+      si (id = 2)
+        EnviarMensaje(valor,rec1)
+        EnviarMensaje(valor,rec3)
+      sino
+        si (id = 3)
+          EnviarMensaje(valor,rec1)
+          EnviarMensaje(valor,rec2)
+  fin
+areas
+  areaRecoleccion: AreaC(1,1,3,100)
+  areaCoordinador: AreaP(4,1,4,1)
+robots
+  robot rec
+  variables
+    cont,id,valor: numero
+    ok1,ok2: boolean
+  comenzar
+    RecibirMensaje(id,robCo)
+    enviarMjes(id,V)
+    RecibirMensaje(ok1,*)
+    RecibirMensaje(ok2,*)
+    cont:= 0
+    Random(valor,1,5)
+    mientras ((ok1 = V) & (ok2 = V))
+      mientras ((PosCa < 100) & (cont<valor))
+        mientras ((HayPapelEnLaEsquina) & (cont<valor))
+          tomarPapel
+          cont:= cont + 1
+        si(cont<>valor)
+          mover        
+      si (cont = valor)
+        cont:= 0
+        Random(valor,1,5)
+        enviarMjes(id,V)
+        RecibirMensaje(ok1,*)
+        RecibirMensaje(ok2,*)
+      sino
+        si (PosCa=100)
+          ok1:= F
+          enviarMjes(id,F)
+  fin
+  robot coord
+  comenzar
+    EnviarMensaje(1,rec1)
+    EnviarMensaje(2,rec2)
+    EnviarMensaje(3,rec3)
+  fin
+variables
+  robCo: coord
+  rec1, rec2, rec3: rec
+comenzar
+  AsignarArea(rec1,areaRecoleccion)
+  AsignarArea(rec2,areaRecoleccion)
+  AsignarArea(rec3,areaRecoleccion)
+  
+  AsignarArea(robCo,areaCoordinador)
+  
+  Iniciar(robCo,4,1)
+  Iniciar(rec1,1,1)
+  Iniciar(rec2,2,1)
+  Iniciar(rec3,3,1)
+fin

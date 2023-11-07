@@ -1,0 +1,120 @@
+programa ejercicio4
+procesos 
+  proceso enviarEstado(E id: numero ; E estado: boolean)
+  comenzar
+    si(id = 1)
+      EnviarMensaje(estado,sla1)
+    sino
+      si (id = 2)
+        EnviarMensaje(estado,sla2)
+  fin
+  proceso enviarTarea(E id:numero ; E ca: numero ; E av :numero ; E valor : numero)
+  comenzar
+    si (id = 1)
+      EnviarMensaje(ca,sla1)
+      EnviarMensaje(av,sla1)
+      EnviarMensaje(valor,sla1)
+    sino
+      si (id = 2)
+        EnviarMensaje(ca,sla2)
+        EnviarMensaje(av,sla2)
+        EnviarMensaje(valor,sla2)
+  fin
+areas
+  areaSlave: AreaPC(2,1,3,1)
+  areaMaster: AreaP(1,1,1,1)
+  areaTareas: AreaC(2,2,100,100)
+robots
+  robot slave
+  variables
+    avenida,calle,valor,id,avIn,caIn: numero
+    estado: boolean
+  comenzar
+    avIn:= PosAv
+    caIn:= PosCa
+    RecibirMensaje(id,robMa)
+    RecibirMensaje(estado,robMa)
+    mientras (estado = V)
+      RecibirMensaje(calle,robMa)
+      RecibirMensaje(avenida,robMa)
+      RecibirMensaje(valor,robMa)
+      si (valor = 1)
+        BloquearEsquina(avenida,calle)
+        Pos(avenida,calle)
+        mientras (HayFlorEnLaEsquina)
+          tomarFlor
+        Pos(avIn,caIn)
+        LiberarEsquina(avenida,calle)
+      sino
+        si (valor = 2)
+          BloquearEsquina(avenida,calle)
+          Pos(avenida,calle)
+          mientras (HayPapelEnLaEsquina)
+            tomarPapel   
+          Pos(avIn,caIn) 
+          LiberarEsquina(avenida,calle)      
+        sino
+          si (valor = 3)
+            BloquearEsquina(avenida,calle)
+            Pos(avenida,calle)
+            mientras (HayPapelEnLaBolsa)
+              depositarPapel
+            mientras (HayFlorEnLaBolsa)
+              depositarFlor
+            Pos(avIn,caIn)
+            LiberarEsquina(avenida,calle)
+      EnviarMensaje(V,robMa)
+      RecibirMensaje(estado,robMa)
+  fin
+  robot master
+  variables
+    calle,avenida,id,tarea,nulo: numero
+    completo: boolean
+  comenzar
+    EnviarMensaje(1,sla1)
+    EnviarMensaje(2,sla2)
+    nulo:= 0
+    repetir 10
+      Random(calle,2,100)
+      Random(avenida,2,100)
+      si (nulo<>1) & (nulo<>2)
+        Random(id,1,2)
+      sino
+        si(nulo = 1)
+          id:= 2
+        sino
+          si(nulo = 2)
+            id:= 1
+      Random(tarea,1,4)
+      Informar(tarea)
+      si(tarea<>4)
+        enviarEstado(id,V)
+        enviarTarea(id,calle,avenida,tarea)
+        RecibirMensaje(completo,*)
+      sino
+        nulo:= id
+        enviarEstado(id,F)
+    enviarEstado(1,F)
+    enviarEstado(2,F)
+  fin
+variables
+  robMa: master
+  sla1, sla2: slave
+comenzar
+  AsignarArea(sla1,areaSlave)
+  AsignarArea(sla2,areaSlave)
+  AsignarArea(sla1,areaTareas)
+  AsignarArea(sla2,areaTareas)
+  AsignarArea(robMa,areaMaster)
+  Iniciar(robMa,1,1)
+  Iniciar(sla1,2,1)
+  Iniciar(sla2,3,1)
+fin
+
+
+
+
+
+
+
+

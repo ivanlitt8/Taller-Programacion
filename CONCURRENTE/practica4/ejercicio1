@@ -1,48 +1,82 @@
 programa ejercicio1
 procesos
-  proceso
+  proceso informarDeposito (E id: numero)
   comenzar
+    si (id = 1)
+      EnviarMensaje(V,cli1)
+    sino
+      si (id = 2)
+        EnviarMensaje(V,cli2)
+      sino
+        si (id = 3)
+          EnviarMensaje(V,cli3)
   fin
 areas
   ciudad: AreaC(1,1,100,100)
 robots
   robot cliente
   variables
-    
+    id,flores,calleAct,sigCa,avAct,cant: numero
+    depositado: boolean
   comenzar
-    INICIO: calcularRandom flores
-    Enviar ID al servidor
-    Enviar cantFlores al servidor
-    Enviar mi Avenida actua
-    Enviar Calle siguiente
-    Esperar ACK del servidor
-    Ir a la esquina Avenida,Calle
-    JuntarFlores
-    Volver a la esquina
-    Avanzar dejando flores
-    Si lleguÃƒÂ© a la avenida 100
-      enviar 0 al servidor
-    sino
-      Volver a INICIO
+    flores:= 0
+    RecibirMensaje(id,serv)
+    mientras(PosCa<100)
+      calleAct:= PosCa
+      sigCa:= calleAct + 1
+      avAct:= PosAv
+      Random(cant,1,4)
+      EnviarMensaje(V,serv)
+      EnviarMensaje(id,serv)
+      EnviarMensaje(cant,serv)
+      EnviarMensaje(avAct,serv)
+      EnviarMensaje(sigCa,serv)
+      RecibirMensaje(depositado,serv)
+      mover
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        flores:= flores + 1
+      mientras(flores<>0)&(PosCa<100)
+        depositarFlor
+        flores:= flores - 1
+        mover
+    si (PosCa = 100)
+      EnviarMensaje(F,serv)
   fin
   robot servidor
   variables
-    
+    ok: boolean
+    id,av,ca,flores: numero
   comenzar
-    INICIO: Recibir ID
-    Recibir N Flores de ID
-    si (flores <> 0)
-      recibir avenida de ID
-      recibir calle de ID
-      pos(avenida,calle)
-      depositar N flores
-      volver a (100,100)
-      enviar ACK a robot ID
-      volver a INICIO
-    sino
-      contar un robot terminado
-      si terminaron los 3 robots
-        terminar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+    EnviarMensaje(1,cli1)
+    EnviarMensaje(2,cli2)
+    EnviarMensaje(3,cli3)
+    repetir 3
+      RecibirMensaje(ok,*)
+      mientras (ok = V)
+        RecibirMensaje(id,*)
+        si (id = 1)
+          RecibirMensaje(flores,cli1)
+          RecibirMensaje(av,cli1)
+          RecibirMensaje(ca,cli1)
+        sino
+          si (id = 2)
+            RecibirMensaje(flores,cli2)
+            RecibirMensaje(av,cli2)
+            RecibirMensaje(ca,cli2)
+          sino 
+            si (id = 3)
+              RecibirMensaje(flores,cli3)
+              RecibirMensaje(av,cli3)
+              RecibirMensaje(ca,cli3)
+        Pos(av,ca)
+        repetir flores
+          depositarFlor
+        Pos(100,100)
+        informarDeposito(id)
+        RecibirMensaje(ok,*)
   fin
 variables
   cli1,cli2,cli3: cliente

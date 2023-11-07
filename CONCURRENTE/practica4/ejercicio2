@@ -1,0 +1,75 @@
+programa ejercicio2
+areas
+  areaProductor: AreaC(5,1,10,100)
+  areaConsumidor: AreaPC(11,1,12,1)
+  areaConsumo: AreaC(50,50,50,50)
+robots
+  robot productor
+  variables
+    caAnt,avAnt,cont:numero
+  comenzar
+    cont:= 0
+    mientras (PosCa < 100)
+      caAnt:= PosCa
+      avAnt:= PosAv
+      mientras (HayPapelEnLaEsquina) & (cont<5)
+        tomarPapel
+        cont:= cont + 1
+      si(cont = 5)
+        BloquearEsquina(50,50)
+        Pos(50,50)
+        repetir cont
+          depositarPapel
+        cont:= 0
+        Pos(avAnt,caAnt)
+        LiberarEsquina(50,50)
+      sino
+        mover
+  fin
+  robot consumidor
+  variables
+    cont,avAnt,caAnt,chances,papeles: numero
+  comenzar
+    cont:= 0
+    avAnt:= PosAv
+    caAnt:= PosCa
+    chances:= 0
+    mientras (chances < 8)
+      Random(papeles,2,5)
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      mientras (HayPapelEnLaEsquina) & (cont<>papeles)
+        tomarPapel
+        cont:= cont + 1
+      si (cont<>papeles)
+        repetir cont
+          depositarPapel
+        Pos(avAnt,caAnt)
+        cont:= 0
+        chances:= chances + 1
+      sino
+        si (cont = papeles)
+          Pos(avAnt,caAnt)
+          repetir cont
+            depositarPapel
+          cont:= 0
+          chances:= 0
+      LiberarEsquina(50,50)
+  fin
+variables
+  prod1,prod2: productor
+  cons1,cons2: consumidor
+comenzar
+  AsignarArea(prod1,areaProductor)
+  AsignarArea(prod2,areaProductor)
+  AsignarArea(prod1,areaConsumo)
+  AsignarArea(prod2,areaConsumo)
+  AsignarArea(cons1,areaConsumo)
+  AsignarArea(cons2,areaConsumo)
+  AsignarArea(cons1,areaConsumidor)
+  AsignarArea(cons2,areaConsumidor)
+  Iniciar(prod1,5,1)
+  Iniciar(prod2,10,1)
+  Iniciar(cons1,11,1)
+  Iniciar(cons2,12,1)  
+fin
