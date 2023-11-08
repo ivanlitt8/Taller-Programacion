@@ -1,0 +1,105 @@
+programa ejercicio2
+procesos 
+  proceso recolectarF(ES flores : numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+  proceso enviarMjes(E id: numero; E ok: boolean)
+  comenzar
+    si(id=1)
+      EnviarMensaje(V,rob2)
+      EnviarMensaje(V,rob3)
+    sino
+      si(id=2)
+        EnviarMensaje(V,rob1)
+        EnviarMensaje(V,rob3)
+      sino
+        EnviarMensaje(V,rob1)
+        EnviarMensaje(V,rob2)
+  fin
+areas
+  areaDeposito: AreaC(50,50,50,50)
+  areaFiscal: AreaP(1,4,1,4)
+  areaRob1: AreaP(1,1,100,1)
+  areaRob2: AreaP(1,2,100,2)
+  areaRob3: AreaP(1,3,100,3)
+robots
+  robot recolector
+  variables
+    flores,esquinas,id,avAnt,caAnt: numero
+    ok1,ok2: boolean
+  comenzar
+    flores:= 0
+    esquinas:= 0
+    derecha
+    RecibirMensaje(id,fiscal)
+    enviarMjes(id,V)
+    RecibirMensaje(ok1,*)
+    RecibirMensaje(ok2,*)
+    mientras(ok1)&(ok2)
+      mientras(esquinas<10)&(PosAv<100)
+        recolectarF(flores)
+        mover
+        esquinas:= esquinas + 1
+      recolectarF(flores)
+      si(esquinas=10)
+        avAnt:= PosAv
+        caAnt:= PosCa
+        BloquearEsquina(50,50)
+        Pos(50,50)
+        repetir flores
+          depositarFlor
+        Pos(avAnt,caAnt)
+        LiberarEsquina(50,50)
+        enviarMjes(id,V)
+        esquinas:= 0
+        flores:= 0
+        RecibirMensaje(ok1,*)
+        RecibirMensaje(ok2,*)
+      si (PosAv=100)
+        EnviarMensaje(V,fiscal)
+        ok1:= F
+  fin
+  robot coord
+  variables
+    avIn,caIn,flores: numero
+    final: boolean
+  comenzar
+    avIn:= PosAv
+    caIn:= PosCa
+    flores:= 0
+    EnviarMensaje(1,rob1)
+    EnviarMensaje(2,rob2)
+    EnviarMensaje(3,rob3)
+    repetir 3
+      RecibirMensaje(final,*)
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+    Pos(avIn,caIn)
+    LiberarEsquina(50,50)
+    Informar(flores)
+  fin
+variables
+  rob1,rob2,rob3: recolector
+  fiscal: coord 
+comenzar
+  AsignarArea(rob1,areaRob1)
+  AsignarArea(rob2,areaRob2)
+  AsignarArea(rob3,areaRob3)
+  AsignarArea(fiscal,areaFiscal)
+  
+  AsignarArea(rob1,areaDeposito)
+  AsignarArea(rob2,areaDeposito)
+  AsignarArea(rob3,areaDeposito)
+  AsignarArea(fiscal,areaDeposito)
+  
+  Iniciar(fiscal,1,4)
+  Iniciar(rob1,1,1)
+  Iniciar(rob2,1,2)
+  Iniciar(rob3,1,3)
+fin
