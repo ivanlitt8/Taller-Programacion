@@ -1,0 +1,109 @@
+programa ejercicio4
+procesos 
+  proceso recolectarF(ES flores : numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+  proceso enviarEstados(E estado: boolean)
+  comenzar
+    EnviarMensaje(estado,rob1)
+    EnviarMensaje(estado,rob2)
+    EnviarMensaje(estado,rob3)
+  fin
+  proceso enviarMje(E id: numero; E ca: numero ; E av: numero; E estado: boolean)
+  comenzar
+    si (id=1)
+      EnviarMensaje(estado,rob1)
+      EnviarMensaje(av,rob1)
+      EnviarMensaje(ca,rob1)
+    sino
+      si (id=2)
+        EnviarMensaje(estado,rob2)
+        EnviarMensaje(av,rob2)
+        EnviarMensaje(ca,rob2)
+      sino
+        EnviarMensaje(estado,rob3)
+        EnviarMensaje(av,rob3)
+        EnviarMensaje(ca,rob3)
+  fin
+areas
+  areaDeposito: AreaC(10,10,10,10)
+  cuadrante: AreaPC(40,40,60,60)
+  areaFiscal: AreaP(4,1,4,1)
+  areaRob1: AreaP(1,1,1,1)
+  areaRob2: AreaP(2,1,2,1)
+  areaRob3: AreaP(3,1,3,1)
+robots
+  robot florero
+  variables
+    avIn,caIn,id,av,ca,flores: numero
+    estado: boolean
+  comenzar
+    avIn:= PosAv
+    caIn:= PosCa
+    RecibirMensaje(id,fiscal)
+    RecibirMensaje(estado,fiscal)
+    mientras(estado)
+      RecibirMensaje(av,fiscal)
+      RecibirMensaje(ca,fiscal)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      recolectarF(flores)
+      Pos(avIn,caIn)
+      LiberarEsquina(av,ca)
+      EnviarMensaje(V,fiscal)
+      RecibirMensaje(estado,fiscal)
+    si(HayFlorEnLaBolsa)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      repetir flores
+        depositarFlor
+      Pos(avIn,caIn)
+      LiberarEsquina(10,10)        
+    EnviarMensaje(flores,fiscal)
+  fin
+  robot coord
+  variables
+    total,id,ca,av,cant: numero
+    terminado: boolean
+  comenzar
+    total:= 0
+    EnviarMensaje(1,rob1)
+    EnviarMensaje(2,rob2)
+    EnviarMensaje(3,rob3)
+    repetir 8
+      Random(id,1,3)
+      Random(ca,40,60)
+      Random(av,40,60)
+      enviarMje(id,ca,av,V)
+      RecibirMensaje(terminado,*)
+    enviarEstados(F)
+    repetir 3
+      RecibirMensaje(cant,*)
+      total:= total + cant
+    Informar(total)
+  fin
+variables
+  rob1,rob2,rob3: florero
+  fiscal: coord
+comenzar
+  AsignarArea(rob1,areaRob1)
+  AsignarArea(rob2,areaRob2)
+  AsignarArea(rob3,areaRob3)
+  AsignarArea(fiscal,areaFiscal)
+  
+  AsignarArea(rob1,areaDeposito)
+  AsignarArea(rob2,areaDeposito)
+  AsignarArea(rob3,areaDeposito)
+  
+  AsignarArea(rob1,cuadrante)
+  AsignarArea(rob2,cuadrante)
+  AsignarArea(rob3,cuadrante)
+  
+  Iniciar(rob1,1,1)
+  Iniciar(rob2,2,1)
+  Iniciar(rob3,3,1)
+  Iniciar(fiscal,4,1)
+fin

@@ -1,0 +1,79 @@
+programa ejercicio5
+areas
+  areaDeposito: AreaC(100,1,100,1)
+  areaServ: AreaP(13,1,13,1)
+  areaCli1: AreaP(10,1,10,1)
+  areaCli2: AreaP(11,1,11,1)
+  areaCli3: AreaP(12,1,12,1)
+robots
+  robot servidor
+  variables
+    estado: boolean
+    cant,id,falsos,avIn,caIn: numero
+  comenzar
+    avIn:= PosAv
+    caIn:= PosCa
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+    EnviarMensaje(1,cli1)
+    EnviarMensaje(2,cli2)
+    EnviarMensaje(3,cli3)
+    falsos:= 0
+    mientras(falsos<>3)
+      Random(cant,1,5)
+      RecibirMensaje(id,*)
+      BloquearEsquina(100,1)
+      Pos(100,1)
+      repetir cant
+        depositarPapel
+      Pos(avIn,caIn)
+      LiberarEsquina(100,1)
+      si(id=1)
+        EnviarMensaje(cant,cli1)
+      sino
+        si(id=2)
+          EnviarMensaje(cant,cli2)
+        sino
+          EnviarMensaje(cant,cli3)
+      repetir 3
+        RecibirMensaje(estado,*)
+        si (estado = F)
+          falsos:= falsos + 1
+  fin
+  robot cliente
+  variables
+    avIn,caIn,cant,id: numero
+  comenzar
+    RecibirMensaje(id,serv)
+    avIn:= PosAv
+    caIn:= PosCa
+    repetir 4
+      EnviarMensaje(id,serv)
+      RecibirMensaje(cant,serv)
+      repetir cant
+        BloquearEsquina(100,1)
+        Pos(100,1)
+        tomarPapel
+        Pos(avIn,caIn)
+        LiberarEsquina(100,1)
+    EnviarMensaje(F,serv)  
+  fin
+variables
+  cli1,cli2,cli3: cliente
+  serv: servidor
+comenzar
+  AsignarArea(cli1,areaCli1)
+  AsignarArea(cli2,areaCli2)
+  AsignarArea(cli3,areaCli3)
+  AsignarArea(serv,areaServ)
+  
+  AsignarArea(cli1,areaDeposito)
+  AsignarArea(cli2,areaDeposito)
+  AsignarArea(cli3,areaDeposito)
+  AsignarArea(serv,areaDeposito)
+
+  Iniciar(cli1,10,1)
+  Iniciar(cli2,11,1)
+  Iniciar(cli3,12,1)
+  Iniciar(serv,13,1)
+fin
