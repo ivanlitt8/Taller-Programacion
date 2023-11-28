@@ -1,4 +1,15 @@
 programa ejercicio5
+procesos
+  proceso enviarMjes(E cant: numero ; E id: numero)
+  comenzar
+    si(id=1)
+      EnviarMensaje(cant,cli1)
+    sino
+      si(id=2)
+        EnviarMensaje(cant,cli2)
+      sino
+        EnviarMensaje(cant,cli3)
+  fin
 areas
   areaDeposito: AreaC(100,1,100,1)
   areaServ: AreaP(13,1,13,1)
@@ -19,26 +30,22 @@ robots
     EnviarMensaje(2,cli2)
     EnviarMensaje(3,cli3)
     falsos:= 0
+    RecibirMensaje(id,*)
+    RecibirMensaje(estado,*)
     mientras(falsos<>3)
-      Random(cant,1,5)
-      RecibirMensaje(id,*)
-      BloquearEsquina(100,1)
-      Pos(100,1)
-      repetir cant
-        depositarPapel
-      Pos(avIn,caIn)
-      LiberarEsquina(100,1)
-      si(id=1)
-        EnviarMensaje(cant,cli1)
-      sino
-        si(id=2)
-          EnviarMensaje(cant,cli2)
-        sino
-          EnviarMensaje(cant,cli3)
-      repetir 3
+      si(estado)
+        Random(cant,1,5)
+        BloquearEsquina(100,1)
+        Pos(100,1)
+        repetir cant
+          depositarPapel
+        Pos(avIn,caIn)
+        LiberarEsquina(100,1)
+        enviarMjes(cant,id)
+        RecibirMensaje(id,*)
         RecibirMensaje(estado,*)
-        si (estado = F)
-          falsos:= falsos + 1
+      sino
+        falsos:= falsos + 1
   fin
   robot cliente
   variables
@@ -49,6 +56,7 @@ robots
     caIn:= PosCa
     repetir 4
       EnviarMensaje(id,serv)
+      EnviarMensaje(V,serv)
       RecibirMensaje(cant,serv)
       repetir cant
         BloquearEsquina(100,1)
@@ -56,7 +64,8 @@ robots
         tomarPapel
         Pos(avIn,caIn)
         LiberarEsquina(100,1)
-    EnviarMensaje(F,serv)  
+        depositarPapel
+    EnviarMensaje(F,serv)
   fin
 variables
   cli1,cli2,cli3: cliente
@@ -66,12 +75,10 @@ comenzar
   AsignarArea(cli2,areaCli2)
   AsignarArea(cli3,areaCli3)
   AsignarArea(serv,areaServ)
-  
   AsignarArea(cli1,areaDeposito)
   AsignarArea(cli2,areaDeposito)
   AsignarArea(cli3,areaDeposito)
   AsignarArea(serv,areaDeposito)
-
   Iniciar(cli1,10,1)
   Iniciar(cli2,11,1)
   Iniciar(cli3,12,1)

@@ -1,0 +1,126 @@
+programa parcial1
+procesos
+  proceso enviarMjesPerdedores(E ganador: numero)
+  comenzar
+    si(ganador=1)
+      EnviarMensaje(F,trab1)
+      EnviarMensaje(V,trab2)
+      EnviarMensaje(V,trab3)
+    sino
+      si(ganador=2)
+        EnviarMensaje(V,trab1)
+        EnviarMensaje(F,trab2)
+        EnviarMensaje(V,trab3)
+      sino
+        EnviarMensaje(V,trab1)
+        EnviarMensaje(V,trab2)
+        EnviarMensaje(F,trab3)
+  fin
+  proceso identificarTrab
+  comenzar
+    EnviarMensaje(1,trab1)
+    EnviarMensaje(2,trab2)
+    EnviarMensaje(3,trab3)
+  fin
+  proceso recolectarF( ES flores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+  proceso hacerRecta(ES flores: numero)
+  comenzar
+    repetir 5
+      recolectarF(flores)
+      mover
+  fin
+  proceso avisarEquipo(E id: numero ; E estado: boolean)
+  comenzar
+    si(id=1)
+      EnviarMensaje(V,trab2)
+      EnviarMensaje(V,trab3)
+    sino
+      si(id=2)
+        EnviarMensaje(V,trab1)
+        EnviarMensaje(V,trab3)
+      sino
+        EnviarMensaje(V,trab1)
+        EnviarMensaje(V,trab2)
+  fin
+areas
+  areaTrab1: AreaP(1,1,6,6)
+  areaTrab2: AreaP(7,1,12,6)
+  areaTrab3: AreaP(13,1,18,6)
+  areaCoord: AreaP(20,1,20,1)
+  areaDeposito: AreaPC(10,10,10,10)
+robots
+  robot trabajador
+  variables
+    ok1,ok2,perdi: boolean
+    id,tramo,flores,avIn,caIn: numero
+  comenzar
+    RecibirMensaje(id,coord)
+    avIn:= PosAv
+    caIn:= PosCa
+    tramo:= 0
+    ok1:= V
+    ok2:= V
+    mientras(tramo<4)
+      mientras(tramo<4)&(ok1)&(ok2)
+        hacerRecta(flores)
+        derecha
+        tramo:= tramo + 1
+        avisarEquipo(id,V)
+        RecibirMensaje(ok1,*)
+        RecibirMensaje(ok2,*)
+      EnviarMensaje(id,coord)
+      EnviarMensaje(flores,coord)
+    RecibirMensaje(perdi,coord)
+    si(perdi)
+      repetir flores
+        BloquearEsquina(10,10)
+        Pos(10,10)
+        depositarFlor
+        Pos(avIn,caIn)
+        LiberarEsquina(10,10)
+  fin
+  robot coordinador
+  variables
+    ganador,max,id,cant: numero
+  comenzar
+    ganador:= 0
+    max:= -1
+    identificarTrab
+    repetir 3
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(cant,trab1)
+      sino
+        si(id=2)
+          RecibirMensaje(cant,trab2)
+        sino
+          RecibirMensaje(cant,trab3)     
+      si(cant>max)
+        max:= cant
+        ganador:= id
+    Informar(ganador)
+    enviarMjesPerdedores(ganador)
+  fin
+variables
+  trab1,trab2,trab3: trabajador
+  coord: coordinador
+comenzar
+  AsignarArea(trab1,areaTrab1)
+  AsignarArea(trab2,areaTrab2) 
+  AsignarArea(trab3,areaTrab3)
+  AsignarArea(coord,areaCoord)
+  
+  AsignarArea(trab1,areaDeposito)
+  AsignarArea(trab2,areaDeposito) 
+  AsignarArea(trab3,areaDeposito)
+
+  Iniciar(trab1,1,1)
+  Iniciar(trab2,7,1)
+  Iniciar(trab3,13,1)
+  Iniciar(coord,20,1)  
+fin

@@ -49,6 +49,8 @@ robots
       deposito(flores,avAnt,caAnt)
       esquinas:= 0
     si(PosAv=100)
+      recolectarF(flores)
+      deposito(flores,avAnt,caAnt)
       EnviarMensaje(F,cosechador)
   fin
   robot robCo

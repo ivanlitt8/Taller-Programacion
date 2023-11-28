@@ -1,0 +1,99 @@
+programa parcial2
+procesos
+  proceso identificarTrab
+  comenzar
+    EnviarMensaje(1,trab1)
+    EnviarMensaje(2,trab2)
+    EnviarMensaje(3,trab3)
+  fin
+  proceso recolectarF( ES flores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+  proceso hacerRecta( E largo: numero; ES flores: numero)
+  comenzar
+    repetir largo
+      recolectarF(flores)
+      mover
+  fin
+  proceso hacerCuadrado(E largo: numero; ES flores:numero)
+  comenzar
+    repetir 4
+      hacerRecta(largo,flores)
+      derecha
+  fin
+  proceso avisarEquipo(E id: numero ; E estado: boolean)
+  comenzar
+    si(id=1)
+      EnviarMensaje(V,trab2)
+      EnviarMensaje(V,trab3)
+    sino
+      si(id=2)
+        EnviarMensaje(V,trab1)
+        EnviarMensaje(V,trab3)
+      sino
+        EnviarMensaje(V,trab1)
+        EnviarMensaje(V,trab2)
+  fin
+areas
+  areaTrab1: AreaP(1,1,6,30)
+  areaTrab2: AreaP(8,1,13,30)
+  areaTrab3: AreaP(15,1,20,30)
+  areaCoord: AreaP(51,1,51,1)
+  areaDeposito: AreaPC(50,50,50,50)
+robots
+  robot trabajador
+  variables
+    ok1,ok2: boolean
+    id,flores,largo,cuadrados,caSig,avSig,avAct,caAct: numero
+  comenzar
+    RecibirMensaje(id,coord)
+    cuadrados:= 0
+    ok1:= V
+    ok2:= V
+    mientras(cuadrados<5)
+      mientras(cuadrados<5)&(ok1)&(ok2)
+        Random(largo,1,5)
+        hacerCuadrado(largo,flores)
+        cuadrados:= cuadrados + 1
+        avisarEquipo(id,V)
+        RecibirMensaje(ok1,*)
+        RecibirMensaje(ok2,*)
+        caSig:= PosCa + largo + 1
+        avSig:= PosAv
+        Pos(avSig,caSig)
+    avAct:= PosAv
+    caAct:= PosCa
+    repetir flores
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      depositarFlor
+      Pos(avAct,caAct)
+      LiberarEsquina(50,50)
+  fin
+  robot coordinador
+  variables
+    ganador,max,id,cant: numero
+  comenzar
+    identificarTrab
+  fin
+variables
+  trab1,trab2,trab3: trabajador
+  coord: coordinador
+comenzar
+  AsignarArea(trab1,areaTrab1)
+  AsignarArea(trab2,areaTrab2) 
+  AsignarArea(trab3,areaTrab3)
+  AsignarArea(coord,areaCoord)
+  
+  AsignarArea(trab1,areaDeposito)
+  AsignarArea(trab2,areaDeposito) 
+  AsignarArea(trab3,areaDeposito)
+
+  Iniciar(trab1,1,1)
+  Iniciar(trab2,8,1)
+  Iniciar(trab3,15,1)
+  Iniciar(coord,51,1)  
+fin
